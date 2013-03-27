@@ -99,14 +99,11 @@ module LitleOnline
       @config_hash['proxy_addr'] = options['proxy_addr'] unless options['proxy_addr'].nil?
       @config_hash['proxy_port'] = options['proxy_port'] unless options['proxy_port'].nil?
       @config_hash['url']        = options['url']        unless options['url'].nil?
+      @config_hash['printxml']   = options['printxml']   unless options['printxml'].nil?
     end
 
     def get_merchant_id(options)
       options['merchantId'] || @config_hash['currency_merchant_map']['DEFAULT']
-    end
-
-    def get_merchant_sdk(options)
-      options['merchantSdk'] || 'Ruby;8.9'
     end
 
     def get_report_group(options)
@@ -117,10 +114,6 @@ module LitleOnline
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
     end
     
-    def get_logged_in_user(options)
-      options['loggedInUser'] || nil
-    end
-
     def get_id(options)
       options['id'] || nil
     end
