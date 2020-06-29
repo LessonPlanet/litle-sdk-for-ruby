@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestToken < Test::Unit::TestCase
     def test_account_num_and_paypage
       hash = {
@@ -39,7 +39,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_echeckandPaypage
       hash = {
         'merchantId' => '101',
@@ -52,7 +52,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.register_token_request(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_echeckandPaypageandaccountnum
       hash = {
         'merchantId' => '101',

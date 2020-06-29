@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name = "LitleOnline"
+  s.name = "OldLitleOnline"
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.15"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =

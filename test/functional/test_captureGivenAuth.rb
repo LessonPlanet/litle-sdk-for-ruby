@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestcaptureGivenAuth < Test::Unit::TestCase
     def test_simple_capture_given_auth_with_card
       hash = {
@@ -47,7 +47,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_capture_given_auth_with_token
       hash = {
         'merchantId' => '101',
@@ -69,7 +69,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -91,7 +91,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -113,7 +113,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_complex_capture_given_auth
       hash = {
         'merchantId' => '101',
@@ -136,7 +136,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_auth_info
       hash = {
         'merchantId' => '101',
@@ -158,7 +158,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture_given_auth(hash)
       assert_equal('Valid Format', response.message)
     end
-    
+
     def test_no_amount
       hash = {
         'merchantId' => '101',

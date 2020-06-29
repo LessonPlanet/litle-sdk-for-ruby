@@ -22,11 +22,11 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'mocha'
 
-module LitleOnline
+module OldLitleOnline
   class TestXmlfields < Test::Unit::TestCase
     def test_custom_billing_with_two_choices
       hash = {
@@ -46,7 +46,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_custom_billing_with_three_choices
       hash = {
         'merchantId' => '101',
@@ -65,7 +65,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_line_item_data
       hash = {
         'merchantId' => '101',
@@ -79,11 +79,11 @@ module LitleOnline
         ]
         }
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<lineItemData>.*<itemSequenceNumber>1<\/itemSequenceNumber>.*<itemDescription>desc1<\/itemDescription>.*<\/lineItemData>.*<lineItemData>.*<itemSequenceNumber>2<\/itemSequenceNumber>.*<itemDescription>desc2<\/itemDescription>.*<\/lineItemData>.*<\/enhancedData>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-  
+
     def test_detail_tax
       hash = {
         'merchantId' => '101',
@@ -97,11 +97,11 @@ module LitleOnline
         ]
         }
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<detailTax>.*<taxIncludedInTotal>true<\/taxIncludedInTotal>.*<taxTypeIdentifier>00<\/taxTypeIdentifier>.*<\/detailTax>.*<detailTax>.*<taxIncludedInTotal>false<\/taxIncludedInTotal>.*<taxTypeIdentifier>01<\/taxTypeIdentifier>.*<\/detailTax>.*<\/enhancedData>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-  
+
     def test_detail_tax_in_lineItem
       hash = {
         'merchantId' => '101',
@@ -123,11 +123,11 @@ module LitleOnline
         {'taxAmount'=>'6'}
         ]}
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<enhancedData>.*<detailTax>.*<taxAmount>5<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>6<\/taxAmount>.*<\/detailTax>.*<lineItemData>.*<itemSequenceNumber>1<\/itemSequenceNumber>.*<itemDescription>desc1<\/itemDescription>.*<detailTax>.*<taxAmount>1<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>2<\/taxAmount>.*<\/detailTax>.*<\/lineItemData>.*<lineItemData>.*<itemSequenceNumber>2<\/itemSequenceNumber>.*<itemDescription>desc2<\/itemDescription>.*<detailTax>.*<taxAmount>3<\/taxAmount>.*<\/detailTax>.*<detailTax>.*<taxAmount>4<\/taxAmount>.*<\/detailTax>.*<\/lineItemData>.*<\/enhancedData>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-    
+
     def test_customerinfo_employerName_xml
       hash = {
         'merchantId' => '101',
@@ -138,7 +138,7 @@ module LitleOnline
         'employerName'=>'Greg'
         }
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<customerInfo>.*<employerName>Greg<\/employerName>.*<\/customerInfo>.*.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
@@ -153,12 +153,12 @@ module LitleOnline
       'bmlProductType'=>'12'
       }
     }
-  
+
     LitleXmlMapper.expects(:request).with(regexp_matches(/.*<billMeLaterRequest>.*<bmlProductType>12<\/bmlProductType>.*<\/billMeLaterRequest>.*.*/m), is_a(Hash))
     LitleOnlineRequest.new.authorization(hash)
   end
 
-        
+
     def test_contact_name
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).name)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'name'=>'abc' }}).name)
@@ -168,7 +168,7 @@ module LitleOnline
       }
       assert_equal "If contact name is specified, it must be between 1 and 100 characters long", exception.message
     end
-    
+
     def test_contact_firstName
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).firstName)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'firstName'=>'abc' }}).firstName)
@@ -178,7 +178,7 @@ module LitleOnline
       }
       assert_equal "If contact firstName is specified, it must be between 1 and 25 characters long", exception.message
     end
-    
+
     def test_contact_middleInitial
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).middleInitial)
       assert_equal("A", Contact.from_hash({ 'contact'=>{'middleInitial'=>'A' }}).middleInitial)
@@ -207,7 +207,7 @@ module LitleOnline
       }
       assert_equal "If contact companyName is specified, it must be between 1 and 40 characters long", exception.message
     end
-    
+
     def test_contact_addressLine1
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).addressLine1)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'addressLine1'=>'abc' }}).addressLine1)
@@ -227,7 +227,7 @@ module LitleOnline
       }
       assert_equal "If contact addressLine2 is specified, it must be between 1 and 35 characters long", exception.message
     end
-    
+
     def test_contact_addressLine3
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).addressLine3)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'addressLine3'=>'abc' }}).addressLine3)
@@ -237,7 +237,7 @@ module LitleOnline
       }
       assert_equal "If contact addressLine3 is specified, it must be between 1 and 35 characters long", exception.message
     end
-    
+
     def test_contact_city
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).city)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'city'=>'abc' }}).city)
@@ -247,7 +247,7 @@ module LitleOnline
       }
       assert_equal "If contact city is specified, it must be between 1 and 35 characters long", exception.message
     end
-    
+
     def test_contact_state
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).state)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'state'=>'abc' }}).state)
@@ -257,7 +257,7 @@ module LitleOnline
       }
       assert_equal "If contact state is specified, it must be between 1 and 30 characters long", exception.message
     end
-    
+
     def test_contact_zip
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).zip)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'zip'=>'abc' }}).zip)
@@ -267,7 +267,7 @@ module LitleOnline
       }
       assert_equal "If contact zip is specified, it must be between 1 and 20 characters long", exception.message
     end
-    
+
     def test_contact_country
       assert_equal("USA", Contact.from_hash({ 'contact'=>{'country'=>'USA' }}).country)
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).country)
@@ -525,7 +525,7 @@ module LitleOnline
       }
       assert_equal "If contact country is specified, it must be valid.  You specified ABC", exception.message
     end
-    
+
     def test_contact_email
       assert_equal(nil, Contact.from_hash({ 'contact'=>{}}).email)
       assert_equal("abc", Contact.from_hash({ 'contact'=>{'email'=>'abc' }}).email)
@@ -545,7 +545,7 @@ module LitleOnline
       }
       assert_equal "If contact phone is specified, it must be between 1 and 20 characters long", exception.message
     end
-    
+
     def test_customInfo_ssn
       assert_equal(nil, CustomerInfo.from_hash({'customerInfo'=>{}}).ssn)
       exception = assert_raise(RuntimeError){
@@ -586,7 +586,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo ssn is specified, it must match the regular expression /\\A\\d{9}\\Z/", exception.message
     end
-  
+
     def test_customerInfo_dob
       assert_equal(nil, CustomerInfo.from_hash({'customerInfo'=>{}}).dob)
       assert_equal("2012-04-11", CustomerInfo.from_hash({'customerInfo'=>{'dob'=>'2012-04-11'}}).dob)
@@ -616,7 +616,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo dob is specified, it must match the regular expression /\\A\\d{4}-\\d{2}-\\d{2}\\Z/", exception.message
     end
-    
+
     def test_customerInfo_customerRegistrationDate
       assert_equal(nil, CustomerInfo.from_hash({'customerInfo'=>{}}).customerRegistrationDate)
       assert_equal("2012-04-11", CustomerInfo.from_hash({'customerInfo'=>{'customerRegistrationDate'=>'2012-04-11'}}).customerRegistrationDate)
@@ -656,7 +656,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo customerType is specified, it must be in [\"New\", \"Existing\"]", exception.message
     end
-    
+
     def test_customerInfo_incomeAmount
       assert_equal(nil, CustomerInfo.from_hash({'customerInfo'=>{}}).incomeAmount)
       assert_equal("41235", CustomerInfo.from_hash({'customerInfo'=>{'incomeAmount'=>'41235'}}).incomeAmount)
@@ -696,7 +696,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo incomeCurrency is specified, it must be in [\"AUD\", \"CAD\", \"CHF\", \"DKK\", \"EUR\", \"GBP\", \"HKD\", \"JPY\", \"NOK\", \"NZD\", \"SEK\", \"SGD\", \"USD\"]", exception.message
     end
-    
+
     def test_customerInfo_customerCheckingAccount
       assert_equal(nil, CustomerInfo.from_hash({'customerInfo'=>{}}).customerCheckingAccount)
       assert_equal("true", CustomerInfo.from_hash({'customerInfo'=>{'customerCheckingAccount'=>'true'}}).customerCheckingAccount)
@@ -730,7 +730,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo employerName is specified, it must be between 1 and 20 characters long", exception.message
     end
-    
+
     def test_contact_customerWorkTelephone
       assert_equal(nil, CustomerInfo.from_hash({ 'customerInfo'=>{}}).customerWorkTelephone)
       assert_equal("abc", CustomerInfo.from_hash({ 'customerInfo'=>{'customerWorkTelephone'=>'abc' }}).customerWorkTelephone)
@@ -766,7 +766,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo yearsAtResidence is specified, it must be between 0 and 99", exception.message
     end
-        
+
     def test_contact_yearsAtEmployer
       assert_equal(nil, CustomerInfo.from_hash({ 'customerInfo'=>{}}).yearsAtEmployer)
       assert_equal("0", CustomerInfo.from_hash({ 'customerInfo'=>{'yearsAtEmployer'=>'0' }}).yearsAtEmployer)
@@ -781,7 +781,7 @@ module LitleOnline
       }
       assert_equal "If customerInfo yearsAtEmployer is specified, it must be between 0 and 99", exception.message
     end
-    
+
     def test_billMeLaterRequest_bmlMerchantId
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).bmlMerchantId)
       assert_equal("41235", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'bmlMerchantId'=>'41235'}}).bmlMerchantId)
@@ -800,7 +800,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest bmlMerchantId is specified, it must be between -9223372036854775808 and 9223372036854775807", exception.message
     end
-    
+
     def test_billMeLaterRequest_bmlProductType
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).bmlProductType)
       assert_equal("a", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'bmlProductType'=>'a' }}).bmlProductType)
@@ -810,7 +810,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest bmlProductType is specified, it must be between 1 and 2 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_termsAndConditions
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).termsAndConditions)
       assert_equal("99999", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'termsAndConditions'=>'99999'}}).termsAndConditions)
@@ -828,7 +828,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest termsAndConditions is specified, it must be between -99999 and 99999", exception.message
     end
-    
+
     def test_billMeLaterRequest_preapprovalNumber
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).preapprovalNumber)
       assert_equal("abcdefghijklmn", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'preapprovalNumber'=>'abcdefghijklmn' }}).preapprovalNumber)
@@ -837,9 +837,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'preapprovalNumber'=>'12345678901234567890123456' }})
       }
-      assert_equal "If billMeLaterRequest preapprovalNumber is specified, it must be between 13 and 25 characters long", exception.message      
+      assert_equal "If billMeLaterRequest preapprovalNumber is specified, it must be between 13 and 25 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_merchantPromotionalCode
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).merchantPromotionalCode)
       assert_equal("9999", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'merchantPromotionalCode'=>'9999'}}).merchantPromotionalCode)
@@ -857,7 +857,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest merchantPromotionalCode is specified, it must be between -9999 and 9999", exception.message
     end
-    
+
     def test_billMeLaterRequest_customerPasswordChanged
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).customerPasswordChanged)
       assert_equal("true", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'customerPasswordChanged'=>'true'}}).customerPasswordChanged)
@@ -869,7 +869,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest customerPasswordChanged is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_billMeLaterRequest_customerBillingAddressChanged
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).customerBillingAddressChanged)
       assert_equal("true", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'customerBillingAddressChanged'=>'true'}}).customerBillingAddressChanged)
@@ -881,7 +881,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest customerBillingAddressChanged is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_billMeLaterRequest_customerEmailChanged
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).customerEmailChanged)
       assert_equal("true", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'customerEmailChanged'=>'true'}}).customerEmailChanged)
@@ -893,7 +893,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest customerEmailChanged is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_billMeLaterRequest_customerPhoneChanged
       assert_equal(nil, BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{}}).customerPhoneChanged)
       assert_equal("true", BillMeLaterRequest.from_hash({'billMeLaterRequest'=>{'customerPhoneChanged'=>'true'}}).customerPhoneChanged)
@@ -905,7 +905,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest customerPhoneChanged is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_billMeLaterRequest_secretQuestionCode
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).secretQuestionCode)
       assert_equal("a", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'secretQuestionCode'=>'a' }}).secretQuestionCode)
@@ -915,7 +915,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest secretQuestionCode is specified, it must be between 1 and 2 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_secretQuestionAnswer
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).secretQuestionAnswer)
       assert_equal("abc", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'secretQuestionAnswer'=>'abc' }}).secretQuestionAnswer)
@@ -925,7 +925,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest secretQuestionAnswer is specified, it must be between 1 and 25 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_virtualAuthenticationKeyPresenceIndicator
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).virtualAuthenticationKeyPresenceIndicator)
       assert_equal("a", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'virtualAuthenticationKeyPresenceIndicator'=>'a' }}).virtualAuthenticationKeyPresenceIndicator)
@@ -934,7 +934,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest virtualAuthenticationKeyPresenceIndicator is specified, it must be between 1 and 1 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_virtualAuthenticationKeyData
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).virtualAuthenticationKeyData)
       assert_equal("a", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'virtualAuthenticationKeyData'=>'a' }}).virtualAuthenticationKeyData)
@@ -945,7 +945,7 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest virtualAuthenticationKeyData is specified, it must be between 1 and 4 characters long", exception.message
     end
-    
+
     def test_billMeLaterRequest_itemCategoryCode
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).itemCategoryCode)
       assert_equal("1", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'itemCategoryCode'=>'1' }}).itemCategoryCode)
@@ -959,14 +959,14 @@ module LitleOnline
       }
       assert_equal "If billMeLaterRequest itemCategoryCode is specified, it must be between -9999 and 9999", exception.message
     end
-    
+
     def test_billMeLaterRequest_authorizationSourcePlatform
       assert_equal("a", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'authorizationSourcePlatform'=>'a' }}).authorizationSourcePlatform)
       assert_equal(nil, BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{}}).authorizationSourcePlatform)
       assert_equal("abcd", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'authorizationSourcePlatform'=>'abcd' }}).authorizationSourcePlatform)
       assert_equal("1234", BillMeLaterRequest.from_hash({ 'billMeLaterRequest'=>{'authorizationSourcePlatform'=>'1234' }}).authorizationSourcePlatform)
     end
-    
+
     def test_fraudCheck_authenticationValue
       assert_equal("abc", FraudCheck.from_hash({ 'fraudCheck'=>{'authenticationValue'=>'abc' }}).authenticationValue)
       assert_equal(nil, FraudCheck.from_hash({ 'fraudCheck'=>{}}).authenticationValue)
@@ -976,7 +976,7 @@ module LitleOnline
       }
       assert_equal "If fraudCheck authenticationValue is specified, it must be between 1 and 32 characters long", exception.message
     end
-    
+
     def test_fraudCheck_authenticationTransactionId
       assert_equal("abc", FraudCheck.from_hash({ 'fraudCheck'=>{'authenticationTransactionId'=>'abc' }}).authenticationTransactionId)
       assert_equal(nil, FraudCheck.from_hash({ 'fraudCheck'=>{}}).authenticationTransactionId)
@@ -986,7 +986,7 @@ module LitleOnline
       }
       assert_equal "If fraudCheck authenticationTransactionId is specified, it must be between 1 and 28 characters long", exception.message
     end
-    
+
     def test_fraudCheck_customerIpAddress
       assert_equal("123.123.123.123", FraudCheck.from_hash({ 'fraudCheck'=>{'customerIpAddress'=>'123.123.123.123' }}).customerIpAddress)
       assert_equal("1.1.1.1", FraudCheck.from_hash({ 'fraudCheck'=>{'customerIpAddress'=>'1.1.1.1' }}).customerIpAddress)
@@ -1001,7 +1001,7 @@ module LitleOnline
       }
       assert_equal "If fraudCheck customerIpAddress is specified, it must match the regular expression /\\A(\\d{1,3}.){3}\\d{1,3}\\Z/", exception.message
     end
-    
+
     def test_fraudCheck_authenticatedByMerchant
       assert_equal(nil, FraudCheck.from_hash({'fraudCheck'=>{}}).authenticatedByMerchant)
       assert_equal("true", FraudCheck.from_hash({'fraudCheck'=>{'authenticatedByMerchant'=>'true'}}).authenticatedByMerchant)
@@ -1013,7 +1013,7 @@ module LitleOnline
       }
       assert_equal "If fraudCheck authenticatedByMerchant is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_fraudResult_avsResult
       assert_equal("a", FraudResult.from_hash({ 'fraudResult'=>{'avsResult'=>'a' }}).avsResult)
       assert_equal(nil, FraudResult.from_hash({ 'fraudResult'=>{}}).avsResult)
@@ -1024,7 +1024,7 @@ module LitleOnline
       }
       assert_equal "If fraudResult avsResult is specified, it must be between 1 and 2 characters long", exception.message
     end
-    
+
     def test_fraudResult_cardValidationResult
       assert_equal("a", FraudResult.from_hash({ 'fraudResult'=>{'cardValidationResult'=>'a' }}).cardValidationResult)
       assert_equal("", FraudResult.from_hash({ 'fraudResult'=>{'cardValidationResult'=>'' }}).cardValidationResult)
@@ -1032,7 +1032,7 @@ module LitleOnline
       assert_equal("ab", FraudResult.from_hash({ 'fraudResult'=>{'cardValidationResult'=>'ab' }}).cardValidationResult)
       assert_equal("12", FraudResult.from_hash({ 'fraudResult'=>{'cardValidationResult'=>'12' }}).cardValidationResult)
     end
-    
+
     def test_fraudResult_authenticationResult
       assert_equal("a", FraudResult.from_hash({ 'fraudResult'=>{'authenticationResult'=>'a' }}).authenticationResult)
       assert_equal(nil, FraudResult.from_hash({ 'fraudResult'=>{}}).authenticationResult)
@@ -1040,9 +1040,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         FraudResult.from_hash({ 'fraudResult'=>{'authenticationResult'=>'12' }})
       }
-      assert_equal "If fraudResult authenticationResult is specified, it must be between 1 and 1 characters long", exception.message      
+      assert_equal "If fraudResult authenticationResult is specified, it must be between 1 and 1 characters long", exception.message
     end
-    
+
     def test_fraudResult_advancedAVSResult
       assert_equal("a", FraudResult.from_hash({ 'fraudResult'=>{'advancedAVSResult'=>'a' }}).advancedAVSResult)
       assert_equal("1", FraudResult.from_hash({ 'fraudResult'=>{'advancedAVSResult'=>'1' }}).advancedAVSResult)
@@ -1054,7 +1054,7 @@ module LitleOnline
       }
       assert_equal "If fraudResult advancedAVSResult is specified, it must be between 1 and 3 characters long", exception.message
     end
-    
+
     def test_authInformation_authDate
       assert_equal(nil, AuthInformation.from_hash({'authInformation'=>{}}).authDate)
       assert_equal("2012-04-11", AuthInformation.from_hash({'authInformation'=>{'authDate'=>'2012-04-11'}}).authDate)
@@ -1082,9 +1082,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         AuthInformation.from_hash({ 'authInformation'=>{'authDate'=>'aaaa-mm-dd' }})
       }
-      assert_equal "If authInformation authDate is specified, it must match the regular expression /\\A\\d{4}-\\d{2}-\\d{2}\\Z/", exception.message      
+      assert_equal "If authInformation authDate is specified, it must match the regular expression /\\A\\d{4}-\\d{2}-\\d{2}\\Z/", exception.message
     end
-    
+
     def test_authInformation_authCode
       assert_equal(nil, AuthInformation.from_hash({ 'authInformation'=>{}}).authCode)
       assert_equal("a", AuthInformation.from_hash({ 'authInformation'=>{'authCode'=>'a' }}).authCode)
@@ -1096,7 +1096,7 @@ module LitleOnline
       }
       assert_equal "If authInformation authCode is specified, it must be between 1 and 6 characters long", exception.message
     end
-    
+
     def test_authInformation_authAmount
       assert_equal(nil, AuthInformation.from_hash({ 'authInformation'=>{}}).authAmount)
       assert_equal("1", AuthInformation.from_hash({ 'authInformation'=>{'authAmount'=>'1' }}).authAmount)
@@ -1114,7 +1114,7 @@ module LitleOnline
       }
       assert_equal "If authInformation authAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_healthcareAmounts_totalHealthcareAmount
       assert_equal("1", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'1' }}).totalHealthcareAmount)
       assert_equal("123456789012", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'123456789012' }}).totalHealthcareAmount)
@@ -1129,7 +1129,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'a' }})
       }
-      assert_equal "If healthcareAmounts totalHealthcareAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If healthcareAmounts totalHealthcareAmount is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'' }})
       }
@@ -1139,7 +1139,7 @@ module LitleOnline
       }
       assert_equal "If healthcareAmounts is specified, it must have a totalHealthcareAmount", exception.message
     end
-    
+
     def test_healthcareAmounts_rxAmount
       assert_equal("1", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'RxAmount'=>'1','totalHealthcareAmount'=>'1' }}).rxAmount)
       assert_equal(nil, HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'1' }}).rxAmount)
@@ -1155,9 +1155,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'RxAmount'=>'a','totalHealthcareAmount'=>'1' }})
       }
-      assert_equal "If healthcareAmounts RxAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If healthcareAmounts RxAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_healthcareAmounts_visionAmount
       assert_equal(nil, HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'1' }}).visionAmount)
       assert_equal("1", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'visionAmount'=>'1','totalHealthcareAmount'=>'1' }}).visionAmount)
@@ -1173,9 +1173,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'visionAmount'=>'a','totalHealthcareAmount'=>'1' }})
       }
-      assert_equal "If healthcareAmounts visionAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If healthcareAmounts visionAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_healthcareAmounts_clinicOtherAmount
       assert_equal(nil, HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'1' }}).clinicOtherAmount)
       assert_equal("1", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'clinicOtherAmount'=>'1','totalHealthcareAmount'=>'1' }}).clinicOtherAmount)
@@ -1191,9 +1191,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'clinicOtherAmount'=>'a','totalHealthcareAmount'=>'1' }})
       }
-      assert_equal "If healthcareAmounts clinicOtherAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If healthcareAmounts clinicOtherAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_healthcareAmounts_dentalAmount
       assert_equal("1", HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'dentalAmount'=>'1','totalHealthcareAmount'=>'1' }}).dentalAmount)
       assert_equal(nil, HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'totalHealthcareAmount'=>'1' }}).dentalAmount)
@@ -1209,25 +1209,25 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         HealthcareAmounts.from_hash({ 'healthcareAmounts'=>{'dentalAmount'=>'a','totalHealthcareAmount'=>'1' }})
       }
-      assert_equal "If healthcareAmounts dentalAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If healthcareAmounts dentalAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_healthcareIIAS_IIASFlag
       assert_equal("Y", HealthcareIIAS.from_hash({'healthcareIIAS'=>{'IIASFlag'=>'Y'}}).iiasFlag)
       exception = assert_raise(RuntimeError){
         HealthcareIIAS.from_hash({ 'healthcareIIAS'=>{'IIASFlag'=>'N' }})
       }
-      assert_equal "If healthcareIIAS IIASFlag is specified, it must be in [\"Y\"]", exception.message      
+      assert_equal "If healthcareIIAS IIASFlag is specified, it must be in [\"Y\"]", exception.message
       exception = assert_raise(RuntimeError){
         HealthcareIIAS.from_hash({ 'healthcareIIAS'=>{'IIASFlag'=>'' }})
       }
-      assert_equal "If healthcareIIAS IIASFlag is specified, it must be in [\"Y\"]", exception.message      
+      assert_equal "If healthcareIIAS IIASFlag is specified, it must be in [\"Y\"]", exception.message
       exception = assert_raise(RuntimeError){
         HealthcareIIAS.from_hash({ 'healthcareIIAS'=>{}})
       }
-      assert_equal "If healthcareIIAS is specified, it must have a IIASFlag", exception.message      
+      assert_equal "If healthcareIIAS is specified, it must have a IIASFlag", exception.message
     end
-    
+
     def test_pos_capability
       assert_equal("notused", Pos.from_hash({'pos'=>{'capability'=>'notused','entryMode'=>'notused','cardholderId'=>'pin'}}).capability)
       assert_equal("magstripe", Pos.from_hash({'pos'=>{'capability'=>'magstripe','entryMode'=>'notused','cardholderId'=>'pin'}}).capability)
@@ -1235,15 +1235,15 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'capability'=>'something','entryMode'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos capability is specified, it must be in [\"notused\", \"magstripe\", \"keyedonly\"]", exception.message      
+      assert_equal "If pos capability is specified, it must be in [\"notused\", \"magstripe\", \"keyedonly\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'capability'=>'','entryMode'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos capability is specified, it must be in [\"notused\", \"magstripe\", \"keyedonly\"]", exception.message      
+      assert_equal "If pos capability is specified, it must be in [\"notused\", \"magstripe\", \"keyedonly\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'entryMode'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos is specified, it must have a capability", exception.message      
+      assert_equal "If pos is specified, it must have a capability", exception.message
     end
 
     def test_pos_entryMode
@@ -1255,15 +1255,15 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'entryMode'=>'something','capability'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos entryMode is specified, it must be in [\"notused\", \"keyed\", \"track1\", \"track2\", \"completeread\"]", exception.message      
+      assert_equal "If pos entryMode is specified, it must be in [\"notused\", \"keyed\", \"track1\", \"track2\", \"completeread\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'entryMode'=>'','capability'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos entryMode is specified, it must be in [\"notused\", \"keyed\", \"track1\", \"track2\", \"completeread\"]", exception.message      
+      assert_equal "If pos entryMode is specified, it must be in [\"notused\", \"keyed\", \"track1\", \"track2\", \"completeread\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'capability'=>'notused','cardholderId'=>'pin' }})
       }
-      assert_equal "If pos is specified, it must have a entryMode", exception.message      
+      assert_equal "If pos is specified, it must have a entryMode", exception.message
     end
 
     def test_pos_cardholderId
@@ -1274,17 +1274,17 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'cardholderId'=>'notused','entryMode'=>'notused','capability'=>'notused' }})
       }
-      assert_equal "If pos cardholderId is specified, it must be in [\"signature\", \"pin\", \"nopin\", \"directmarket\"]", exception.message      
+      assert_equal "If pos cardholderId is specified, it must be in [\"signature\", \"pin\", \"nopin\", \"directmarket\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'cardholderId'=>'','entryMode'=>'notused','capability'=>'notused' }})
       }
-      assert_equal "If pos cardholderId is specified, it must be in [\"signature\", \"pin\", \"nopin\", \"directmarket\"]", exception.message      
+      assert_equal "If pos cardholderId is specified, it must be in [\"signature\", \"pin\", \"nopin\", \"directmarket\"]", exception.message
       exception = assert_raise(RuntimeError){
         Pos.from_hash({ 'pos'=>{'entryMode'=>'notused','capability'=>'notused' }})
       }
-      assert_equal "If pos is specified, it must have a cardholderId", exception.message      
+      assert_equal "If pos is specified, it must have a cardholderId", exception.message
     end
-    
+
     def test_detailTax_taxIncludedInTotal
       assert_equal(nil, DetailTax.from_hash({'detailTax'=>[{'taxAmount'=>'1'}]},0).taxIncludedInTotal)
       assert_equal("true", DetailTax.from_hash({'detailTax'=>[{'taxIncludedInTotal'=>'true','taxAmount'=>'1'}]},0).taxIncludedInTotal)
@@ -1294,9 +1294,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{'taxIncludedInTotal'=>'vrai','taxAmount'=>'1' }]},0) #French true
       }
-      assert_equal "If detailTax taxIncludedInTotal is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message      
+      assert_equal "If detailTax taxIncludedInTotal is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_detailTax_taxAmount
       assert_equal("1", DetailTax.from_hash({ 'detailTax'=>[{'taxAmount'=>'1' }]},0).taxAmount)
       assert_equal("123456789012", DetailTax.from_hash({ 'detailTax'=>[{'taxAmount'=>'123456789012' }]},0).taxAmount)
@@ -1311,17 +1311,17 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{'taxAmount'=>'a' }]},0)
       }
-      assert_equal "If detailTax taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If detailTax taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{'taxAmount'=>'' }]},0)
       }
-      assert_equal "If detailTax taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message      
+      assert_equal "If detailTax taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{}]},0)
       }
       assert_equal "If detailTax is specified, it must have a taxAmount", exception.message
     end
-    
+
     def test_detailTax_taxRate
       assert_equal("123.45", DetailTax.from_hash({ 'detailTax'=>[{'taxRate'=>'123.45','taxAmount'=>'1' }]},0).taxRate)
       assert_equal("+123.45", DetailTax.from_hash({ 'detailTax'=>[{'taxRate'=>'+123.45','taxAmount'=>'1' }]},0).taxRate)
@@ -1345,7 +1345,7 @@ module LitleOnline
       }
       assert_equal "If detailTax taxRate is specified, it must match the regular expression /\\A(\\+|\\-)?\\d*\\.?\\d*\\Z/", exception.message
     end
-    
+
     def test_detailTax_taxTypeIdentifier
       assert_equal(nil,   DetailTax.from_hash({'detailTax'=>[{'taxAmount'=>'1'}]},0).taxTypeIdentifier)
       assert_equal("00", DetailTax.from_hash({'detailTax'=>[{'taxTypeIdentifier'=>'00','taxAmount'=>'1'}]},0).taxTypeIdentifier)
@@ -1366,7 +1366,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{'taxTypeIdentifier'=>'07','taxAmount'=>'1' }]},0)
       }
-      assert_equal "If detailTax taxTypeIdentifier is specified, it must be in [\"00\", \"01\", \"02\", \"03\", \"04\", \"05\", \"06\", \"10\", \"11\", \"12\", \"13\", \"14\", \"20\", \"21\", \"22\"]", exception.message      
+      assert_equal "If detailTax taxTypeIdentifier is specified, it must be in [\"00\", \"01\", \"02\", \"03\", \"04\", \"05\", \"06\", \"10\", \"11\", \"12\", \"13\", \"14\", \"20\", \"21\", \"22\"]", exception.message
     end
 
     def test_detailTax_cardAcceptorTaxId
@@ -1377,7 +1377,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         DetailTax.from_hash({ 'detailTax'=>[{'cardAcceptorTaxId'=>'123456789012345678901','taxAmount'=>'1' }]},0)
       }
-      assert_equal "If detailTax cardAcceptorTaxId is specified, it must be between 1 and 20 characters long", exception.message      
+      assert_equal "If detailTax cardAcceptorTaxId is specified, it must be between 1 and 20 characters long", exception.message
     end
 
     def test_lineItemData_itemSequenceNumber
@@ -1387,9 +1387,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'itemSequenceNumber'=>'a','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData itemSequenceNumber is specified, it must be between 1 and 99", exception.message      
+      assert_equal "If lineItemData itemSequenceNumber is specified, it must be between 1 and 99", exception.message
     end
-    
+
     def test_lineItemData_itemDescription
       assert_equal("a", LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'a'}]},0).itemDescription)
       assert_equal("1", LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'1'}]},0).itemDescription)
@@ -1397,17 +1397,17 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'itemDescription'=>'123456789012345678901234567'}]},0)
       }
-      assert_equal "If lineItemData itemDescription is specified, it must be between 1 and 26 characters long", exception.message      
+      assert_equal "If lineItemData itemDescription is specified, it must be between 1 and 26 characters long", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'itemDescription'=>''}]},0)
       }
-      assert_equal "If lineItemData itemDescription is specified, it must be between 1 and 26 characters long", exception.message      
+      assert_equal "If lineItemData itemDescription is specified, it must be between 1 and 26 characters long", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{}]},0)
       }
-      assert_equal "If lineItemData is specified, it must have a itemDescription", exception.message      
+      assert_equal "If lineItemData is specified, it must have a itemDescription", exception.message
     end
-    
+
     def test_lineItemData_productCode
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).productCode)
       assert_equal("a", LineItemData.from_hash({'lineItemData'=>[{'productCode'=>'a','itemDescription'=>'desc'}]},0).productCode)
@@ -1415,9 +1415,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'productCode'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData productCode is specified, it must be between 1 and 12 characters long", exception.message      
+      assert_equal "If lineItemData productCode is specified, it must be between 1 and 12 characters long", exception.message
     end
-    
+
     def test_lineItemData_quantity
       assert_equal("123.45", LineItemData.from_hash({ 'lineItemData'=>[{'quantity'=>'123.45','itemDescription'=>'1' }]},0).quantity)
       assert_equal("+123.45", LineItemData.from_hash({ 'lineItemData'=>[{'quantity'=>'+123.45','itemDescription'=>'1' }]},0).quantity)
@@ -1441,7 +1441,7 @@ module LitleOnline
       }
       assert_equal "If lineItemData quantity is specified, it must match the regular expression /\\A(\\+|\\-)?\\d*\\.?\\d*\\Z/", exception.message
     end
-    
+
     def test_lineItemData_unitOfMeasure
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).unitOfMeasure)
       assert_equal("a", LineItemData.from_hash({'lineItemData'=>[{'unitOfMeasure'=>'a','itemDescription'=>'desc'}]},0).unitOfMeasure)
@@ -1449,9 +1449,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'unitOfMeasure'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData unitOfMeasure is specified, it must be between 1 and 12 characters long", exception.message            
+      assert_equal "If lineItemData unitOfMeasure is specified, it must be between 1 and 12 characters long", exception.message
     end
-    
+
     def test_lineItemData_taxAmount
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).taxAmount)
       assert_equal("-123456789012", LineItemData.from_hash({'lineItemData'=>[{'taxAmount'=>'-123456789012','itemDescription'=>'desc'}]},0).taxAmount)
@@ -1459,13 +1459,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'taxAmount'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'taxAmount'=>'a','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData taxAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_lineItemData_lineItemTotal
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).lineItemTotal)
       assert_equal("-123456789012", LineItemData.from_hash({'lineItemData'=>[{'lineItemTotal'=>'-123456789012','itemDescription'=>'desc'}]},0).lineItemTotal)
@@ -1473,13 +1473,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'lineItemTotal'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData lineItemTotal is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData lineItemTotal is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'lineItemTotal'=>'a','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData lineItemTotal is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData lineItemTotal is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_lineItemData_lineItemTotalWithTax
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).lineItemTotalWithTax)
       assert_equal("-123456789012", LineItemData.from_hash({'lineItemData'=>[{'lineItemTotalWithTax'=>'-123456789012','itemDescription'=>'desc'}]},0).lineItemTotalWithTax)
@@ -1487,13 +1487,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'lineItemTotalWithTax'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData lineItemTotalWithTax is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData lineItemTotalWithTax is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'lineItemTotalWithTax'=>'a','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData lineItemTotalWithTax is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData lineItemTotalWithTax is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_lineItemData_itemDiscountAmount
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).itemDiscountAmount)
       assert_equal("-123456789012", LineItemData.from_hash({'lineItemData'=>[{'itemDiscountAmount'=>'-123456789012','itemDescription'=>'desc'}]},0).itemDiscountAmount)
@@ -1501,13 +1501,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'itemDiscountAmount'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData itemDiscountAmount is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData itemDiscountAmount is specified, it must be between -999999999999 and 999999999999", exception.message
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'itemDiscountAmount'=>'a','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData itemDiscountAmount is specified, it must be between -999999999999 and 999999999999", exception.message                  
+      assert_equal "If lineItemData itemDiscountAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_lineItemData_commodityCode
       assert_equal(nil, LineItemData.from_hash({'lineItemData'=>[{'itemDescription'=>'desc'}]},0).commodityCode)
       assert_equal("a", LineItemData.from_hash({'lineItemData'=>[{'commodityCode'=>'a','itemDescription'=>'desc'}]},0).commodityCode)
@@ -1515,9 +1515,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         LineItemData.from_hash({ 'lineItemData'=>[{'commodityCode'=>'1234567890123','itemDescription'=>'desc'}]},0)
       }
-      assert_equal "If lineItemData commodityCode is specified, it must be between 1 and 12 characters long", exception.message            
+      assert_equal "If lineItemData commodityCode is specified, it must be between 1 and 12 characters long", exception.message
     end
-    
+
     def test_lineItemData_unitCost
       assert_equal("123.45", LineItemData.from_hash({ 'lineItemData'=>[{'unitCost'=>'123.45','itemDescription'=>'1' }]},0).unitCost)
       assert_equal("+123.45", LineItemData.from_hash({ 'lineItemData'=>[{'unitCost'=>'+123.45','itemDescription'=>'1' }]},0).unitCost)
@@ -1541,7 +1541,7 @@ module LitleOnline
       }
       assert_equal "If lineItemData unitCost is specified, it must match the regular expression /\\A(\\+|\\-)?\\d*\\.?\\d*\\Z/", exception.message
     end
-    
+
     def test_enhancedData_customerReference
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).customerReference)
       assert_equal("a", EnhancedData.from_hash({'enhancedData'=>{'customerReference'=>'a'}}).customerReference)
@@ -1549,7 +1549,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'customerReference'=>'123456789012345678'}})
       }
-      assert_equal "If enhancedData customerReference is specified, it must be between 1 and 17 characters long", exception.message            
+      assert_equal "If enhancedData customerReference is specified, it must be between 1 and 17 characters long", exception.message
     end
 
     def test_enhancedData_salesTax
@@ -1569,7 +1569,7 @@ module LitleOnline
       }
       assert_equal "If enhancedData salesTax is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_enhancedData_deliveryType
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).deliveryType)
       assert_equal("CNC", EnhancedData.from_hash({'enhancedData'=>{'deliveryType'=>'CNC'}}).deliveryType)
@@ -1582,7 +1582,7 @@ module LitleOnline
       }
       assert_equal "If enhancedData deliveryType is specified, it must be in [\"CNC\", \"DIG\", \"PHY\", \"SVC\", \"TBD\"]", exception.message
     end
-    
+
     def test_enhancedData_taxExempt
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).taxExempt)
       assert_equal("true", EnhancedData.from_hash({'enhancedData'=>{'taxExempt'=>'true'}}).taxExempt)
@@ -1594,7 +1594,7 @@ module LitleOnline
       }
       assert_equal "If enhancedData taxExempt is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_enhancedData_discountAmount
       assert_equal(nil, EnhancedData.from_hash({ 'enhancedData'=>{}}).discountAmount)
       assert_equal("1", EnhancedData.from_hash({ 'enhancedData'=>{'discountAmount'=>'1' }}).discountAmount)
@@ -1612,7 +1612,7 @@ module LitleOnline
       }
       assert_equal "If enhancedData discountAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_enhancedData_shippingAmount
       assert_equal(nil, EnhancedData.from_hash({ 'enhancedData'=>{}}).shippingAmount)
       assert_equal("1", EnhancedData.from_hash({ 'enhancedData'=>{'shippingAmount'=>'1' }}).shippingAmount)
@@ -1630,7 +1630,7 @@ module LitleOnline
       }
       assert_equal "If enhancedData shippingAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_enhancedData_dutyAmount
       assert_equal(nil, EnhancedData.from_hash({ 'enhancedData'=>{}}).dutyAmount)
       assert_equal("1", EnhancedData.from_hash({ 'enhancedData'=>{'dutyAmount'=>'1' }}).dutyAmount)
@@ -1648,27 +1648,27 @@ module LitleOnline
       }
       assert_equal "If enhancedData dutyAmount is specified, it must be between -999999999999 and 999999999999", exception.message
     end
-    
+
     def test_enhancedData_shipFromPostalCode
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).shipFromPostalCode)
       assert_equal("a", EnhancedData.from_hash({'enhancedData'=>{'shipFromPostalCode'=>'a'}}).shipFromPostalCode)
-      assert_equal("12345678901234567890", EnhancedData.from_hash({'enhancedData'=>{'shipFromPostalCode'=>'12345678901234567890'}}).shipFromPostalCode)      
+      assert_equal("12345678901234567890", EnhancedData.from_hash({'enhancedData'=>{'shipFromPostalCode'=>'12345678901234567890'}}).shipFromPostalCode)
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'shipFromPostalCode'=>'123456789012345678901'}})
       }
-      assert_equal "If enhancedData shipFromPostalCode is specified, it must be between 1 and 20 characters long", exception.message            
+      assert_equal "If enhancedData shipFromPostalCode is specified, it must be between 1 and 20 characters long", exception.message
     end
-    
+
     def test_enhancedData_destinationPostalCode
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).destinationPostalCode)
       assert_equal("a", EnhancedData.from_hash({'enhancedData'=>{'destinationPostalCode'=>'a'}}).destinationPostalCode)
-      assert_equal("12345678901234567890", EnhancedData.from_hash({'enhancedData'=>{'destinationPostalCode'=>'12345678901234567890'}}).destinationPostalCode)      
+      assert_equal("12345678901234567890", EnhancedData.from_hash({'enhancedData'=>{'destinationPostalCode'=>'12345678901234567890'}}).destinationPostalCode)
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'destinationPostalCode'=>'123456789012345678901'}})
       }
-      assert_equal "If enhancedData destinationPostalCode is specified, it must be between 1 and 20 characters long", exception.message            
+      assert_equal "If enhancedData destinationPostalCode is specified, it must be between 1 and 20 characters long", exception.message
     end
-    
+
     def test_enhancedData_destinationCountryCode
       assert_equal("USA", EnhancedData.from_hash({ 'enhancedData'=>{'destinationCountryCode'=>'USA' }}).destinationCountryCode)
       assert_equal(nil, EnhancedData.from_hash({ 'enhancedData'=>{}}).destinationCountryCode)
@@ -1924,19 +1924,19 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'destinationCountryCode'=>'ABC' }})
       }
-      assert_equal "If enhancedData destinationCountryCode is specified, it must be valid.  You specified ABC", exception.message    
+      assert_equal "If enhancedData destinationCountryCode is specified, it must be valid.  You specified ABC", exception.message
     end
-    
+
     def test_enhancedData_invoiceReferenceNumber
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).invoiceReferenceNumber)
       assert_equal("a", EnhancedData.from_hash({'enhancedData'=>{'invoiceReferenceNumber'=>'a'}}).invoiceReferenceNumber)
-      assert_equal("123456789012345", EnhancedData.from_hash({'enhancedData'=>{'invoiceReferenceNumber'=>'123456789012345'}}).invoiceReferenceNumber)      
+      assert_equal("123456789012345", EnhancedData.from_hash({'enhancedData'=>{'invoiceReferenceNumber'=>'123456789012345'}}).invoiceReferenceNumber)
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'invoiceReferenceNumber'=>'1234567890123456'}})
       }
-      assert_equal "If enhancedData invoiceReferenceNumber is specified, it must be between 1 and 15 characters long", exception.message            
+      assert_equal "If enhancedData invoiceReferenceNumber is specified, it must be between 1 and 15 characters long", exception.message
     end
-    
+
     def test_enhancedData_orderDate
       assert_equal(nil, EnhancedData.from_hash({'enhancedData'=>{}}).orderDate)
       assert_equal("2012-04-11", EnhancedData.from_hash({'enhancedData'=>{'orderDate'=>'2012-04-11'}}).orderDate)
@@ -1964,29 +1964,29 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         EnhancedData.from_hash({ 'enhancedData'=>{'orderDate'=>'aaaa-mm-dd' }})
       }
-      assert_equal "If enhancedData orderDate is specified, it must match the regular expression /\\A\\d{4}-\\d{2}-\\d{2}\\Z/", exception.message      
+      assert_equal "If enhancedData orderDate is specified, it must match the regular expression /\\A\\d{4}-\\d{2}-\\d{2}\\Z/", exception.message
     end
-    
+
     def test_amexAggregatorData_sellerId
       assert_equal(nil, AmexAggregatorData.from_hash({'amexAggregatorData'=>{}}).sellerId)
       assert_equal("a", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerId'=>'a'}}).sellerId)
-      assert_equal("1234567890123456", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerId'=>'1234567890123456'}}).sellerId)      
+      assert_equal("1234567890123456", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerId'=>'1234567890123456'}}).sellerId)
       exception = assert_raise(RuntimeError){
         AmexAggregatorData.from_hash({ 'amexAggregatorData'=>{'sellerId'=>'12345678901234567'}})
       }
-      assert_equal "If amexAggregatorData sellerId is specified, it must be between 1 and 16 characters long", exception.message            
+      assert_equal "If amexAggregatorData sellerId is specified, it must be between 1 and 16 characters long", exception.message
     end
 
     def test_amexAggregatorData_sellerMerchantCategoryCode
       assert_equal(nil, AmexAggregatorData.from_hash({'amexAggregatorData'=>{}}).sellerMerchantCategoryCode)
       assert_equal("a", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'a'}}).sellerMerchantCategoryCode)
-      assert_equal("1234", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234'}}).sellerMerchantCategoryCode)      
+      assert_equal("1234", AmexAggregatorData.from_hash({'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'1234'}}).sellerMerchantCategoryCode)
       exception = assert_raise(RuntimeError){
         AmexAggregatorData.from_hash({ 'amexAggregatorData'=>{'sellerMerchantCategoryCode'=>'12345'}})
       }
-      assert_equal "If amexAggregatorData sellerMerchantCategoryCode is specified, it must be between 1 and 4 characters long", exception.message            
+      assert_equal "If amexAggregatorData sellerMerchantCategoryCode is specified, it must be between 1 and 4 characters long", exception.message
     end
-    
+
     def test_card_mop
       assert_equal(nil, Card.from_hash({'card'=>{}}).mop)
       assert_equal("", Card.from_hash({'card'=>{'type'=>''}}).mop)
@@ -2004,17 +2004,17 @@ module LitleOnline
       }
       assert_equal "If card type is specified, it must be in [\"\", \"MC\", \"VI\", \"AX\", \"DC\", \"DI\", \"PP\", \"JC\", \"BL\", \"EC\"]", exception.message
     end
-    
+
     def test_card_track
       assert_equal(nil, Card.from_hash({'card'=>{}}).track)
       assert_equal("a", Card.from_hash({'card'=>{'track'=>'a'}}).track)
-      assert_equal("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456", Card.from_hash({'card'=>{'track'=>'1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456'}}).track)      
+      assert_equal("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456", Card.from_hash({'card'=>{'track'=>'1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456'}}).track)
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'track'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567'}})
       }
-      assert_equal "If card track is specified, it must be between 1 and 256 characters long", exception.message            
+      assert_equal "If card track is specified, it must be between 1 and 256 characters long", exception.message
     end
-    
+
     def test_card_number
       assert_equal(nil, Card.from_hash({'card'=>{}}).number)
       assert_equal("abcdefghijklm", Card.from_hash({'card'=>{'number'=>'abcdefghijklm'}}).number)
@@ -2023,9 +2023,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'number'=>'12345678901234567890123456'}})
       }
-      assert_equal "If card number is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If card number is specified, it must be between 13 and 25 characters long", exception.message
     end
-    
+
     def test_card_expDate
       assert_equal(nil, Card.from_hash({'card'=>{}}).expDate)
       assert_equal("abcd", Card.from_hash({'card'=>{'expDate'=>'abcd'}}).expDate)
@@ -2033,23 +2033,23 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'expDate'=>'123'}})
       }
-      assert_equal "If card expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If card expDate is specified, it must be between 4 and 4 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'expDate'=>'12345'}})
       }
-      assert_equal "If card expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If card expDate is specified, it must be between 4 and 4 characters long", exception.message
     end
-    
+
     def test_card_cardValidationNum
       assert_equal(nil, Card.from_hash({'card'=>{}}).cardValidationNum)
       assert_equal("a", Card.from_hash({'card'=>{'cardValidationNum'=>'a'}}).cardValidationNum)
-      assert_equal("1234", Card.from_hash({'card'=>{'cardValidationNum'=>'1234'}}).cardValidationNum)      
+      assert_equal("1234", Card.from_hash({'card'=>{'cardValidationNum'=>'1234'}}).cardValidationNum)
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'cardValidationNum'=>'12345'}})
       }
-      assert_equal "If card cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message                  
+      assert_equal "If card cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message
     end
-    
+
     def test_cardToken_litleToken
       assert_equal("abcdefghijklm", CardToken.from_hash({'cardToken'=>{'litleToken'=>'abcdefghijklm'}}).litleToken)
       assert_equal("1234567890123", CardToken.from_hash({'cardToken'=>{'litleToken'=>'1234567890123'}}).litleToken)
@@ -2057,13 +2057,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CardToken.from_hash({ 'cardToken'=>{'litleToken'=>'12345678901234567890123456'}})
       }
-      assert_equal "If cardToken litleToken is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If cardToken litleToken is specified, it must be between 13 and 25 characters long", exception.message
       exception = assert_raise(RuntimeError){
         CardToken.from_hash({ 'cardToken'=>{}})
       }
-      assert_equal "If cardToken is specified, it must have a litleToken", exception.message            
+      assert_equal "If cardToken is specified, it must have a litleToken", exception.message
     end
-    
+
     def test_cardToken_expDate
       assert_equal(nil, CardToken.from_hash({'cardToken'=>{'litleToken'=>'1234567890123'}}).expDate)
       assert_equal("abcd", CardToken.from_hash({'cardToken'=>{'expDate'=>'abcd','litleToken'=>'1234567890123'}}).expDate)
@@ -2071,23 +2071,23 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CardToken.from_hash({ 'cardToken'=>{'expDate'=>'123','litleToken'=>'1234567890123'}})
       }
-      assert_equal "If cardToken expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If cardToken expDate is specified, it must be between 4 and 4 characters long", exception.message
       exception = assert_raise(RuntimeError){
         CardToken.from_hash({ 'cardToken'=>{'expDate'=>'12345','litleToken'=>'1234567890123'}})
       }
-      assert_equal "If cardToken expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If cardToken expDate is specified, it must be between 4 and 4 characters long", exception.message
     end
-    
+
     def test_cardToken_cardValidationNum
       assert_equal(nil, CardToken.from_hash({'cardToken'=>{'litleToken'=>'1234567890123'}}).cardValidationNum)
       assert_equal("a", CardToken.from_hash({'cardToken'=>{'cardValidationNum'=>'a','litleToken'=>'1234567890123'}}).cardValidationNum)
-      assert_equal("1234", CardToken.from_hash({'cardToken'=>{'cardValidationNum'=>'1234','litleToken'=>'1234567890123'}}).cardValidationNum)      
+      assert_equal("1234", CardToken.from_hash({'cardToken'=>{'cardValidationNum'=>'1234','litleToken'=>'1234567890123'}}).cardValidationNum)
       exception = assert_raise(RuntimeError){
         CardToken.from_hash({ 'cardToken'=>{'cardValidationNum'=>'12345','litleToken'=>'1234567890123'}})
       }
-      assert_equal "If cardToken cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message                  
+      assert_equal "If cardToken cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message
     end
-    
+
     def test_cardToken_mop
       assert_equal(nil, CardToken.from_hash({'cardToken'=>{'litleToken'=>'1234567890123'}}).mop)
       assert_equal("", CardToken.from_hash({'cardToken'=>{'type'=>'','litleToken'=>'1234567890123'}}).mop)
@@ -2105,7 +2105,7 @@ module LitleOnline
       }
       assert_equal "If cardToken type is specified, it must be in [\"\", \"MC\", \"VI\", \"AX\", \"DC\", \"DI\", \"PP\", \"JC\", \"BL\", \"EC\"]", exception.message
     end
-    
+
     def test_cardPaypage_paypageRegistrationId
       assert_equal("a", CardPaypage.from_hash({'cardPaypage'=>{'paypageRegistrationId'=>'a'}}).paypageRegistrationId)
       assert_equal("1234567890123", CardPaypage.from_hash({'cardPaypage'=>{'paypageRegistrationId'=>'1234567890123'}}).paypageRegistrationId)
@@ -2113,11 +2113,11 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CardPaypage.from_hash({ 'cardPaypage'=>{'paypageRegistrationId'=>'123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123'}})
       }
-      assert_equal "If cardPaypage paypageRegistrationId is specified, it must be between 1 and 512 characters long", exception.message            
+      assert_equal "If cardPaypage paypageRegistrationId is specified, it must be between 1 and 512 characters long", exception.message
       exception = assert_raise(RuntimeError){
         CardPaypage.from_hash({ 'cardPaypage'=>{}})
       }
-      assert_equal "If cardPaypage is specified, it must have a paypageRegistrationId", exception.message            
+      assert_equal "If cardPaypage is specified, it must have a paypageRegistrationId", exception.message
     end
 
     def test_cardPaypage_expDate
@@ -2127,23 +2127,23 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CardPaypage.from_hash({ 'cardPaypage'=>{'expDate'=>'123','paypageRegistrationId'=>'1'}})
       }
-      assert_equal "If cardPaypage expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If cardPaypage expDate is specified, it must be between 4 and 4 characters long", exception.message
       exception = assert_raise(RuntimeError){
         CardPaypage.from_hash({ 'cardPaypage'=>{'expDate'=>'12345','paypageRegistrationId'=>'1'}})
       }
-      assert_equal "If cardPaypage expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If cardPaypage expDate is specified, it must be between 4 and 4 characters long", exception.message
     end
-    
+
     def test_cardPaypage_cardValidationNum
       assert_equal(nil, CardPaypage.from_hash({'cardPaypage'=>{'paypageRegistrationId'=>'1234567890123'}}).cardValidationNum)
       assert_equal("a", CardPaypage.from_hash({'cardPaypage'=>{'cardValidationNum'=>'a','paypageRegistrationId'=>'1234567890123'}}).cardValidationNum)
-      assert_equal("1234", CardPaypage.from_hash({'cardPaypage'=>{'cardValidationNum'=>'1234','paypageRegistrationId'=>'1234567890123'}}).cardValidationNum)      
+      assert_equal("1234", CardPaypage.from_hash({'cardPaypage'=>{'cardValidationNum'=>'1234','paypageRegistrationId'=>'1234567890123'}}).cardValidationNum)
       exception = assert_raise(RuntimeError){
         CardPaypage.from_hash({ 'cardPaypage'=>{'cardValidationNum'=>'12345','paypageRegistrationId'=>'1234567890123'}})
       }
-      assert_equal "If cardPaypage cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message                  
+      assert_equal "If cardPaypage cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message
     end
-    
+
     def test_cardPaypage_mop
       assert_equal(nil, CardPaypage.from_hash({'cardPaypage'=>{'paypageRegistrationId'=>'1234567890123'}}).mop)
       assert_equal("", CardPaypage.from_hash({'cardPaypage'=>{'type'=>'','paypageRegistrationId'=>'1234567890123'}}).mop)
@@ -2161,7 +2161,7 @@ module LitleOnline
       }
       assert_equal "If cardPaypage type is specified, it must be in [\"\", \"MC\", \"VI\", \"AX\", \"DC\", \"DI\", \"PP\", \"JC\", \"BL\", \"EC\"]", exception.message
     end
-    
+
     def test_payPal_payerId
       assert_equal("a", PayPal.from_hash({'payPal'=>{'payerId'=>'a','transactionId'=>'b'}}).payerId)
       assert_equal("1234567890123", PayPal.from_hash({'payPal'=>{'payerId'=>'1234567890123','transactionId'=>'b'}}).payerId)
@@ -2169,22 +2169,22 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         PayPal.from_hash({ 'payPal'=>{'transactionId'=>'b'}})
       }
-      assert_equal "If payPal is specified, it must have a payerId", exception.message            
+      assert_equal "If payPal is specified, it must have a payerId", exception.message
     end
-    
+
     def test_payPal_token
       assert_equal(nil, PayPal.from_hash({'payPal'=>{'payerId'=>'1','transactionId'=>'b'}}).token)
       assert_equal("a", PayPal.from_hash({'payPal'=>{'payerId'=>'1','transactionId'=>'b','token'=>'a'}}).token)
       assert_equal("1234567890123", PayPal.from_hash({'payPal'=>{'payerId'=>'1','transactionId'=>'b','token'=>'1234567890123'}}).token)
       assert_equal("123", PayPal.from_hash({'payPal'=>{'payerId'=>'1','transactionId'=>'b','token'=>'123'}}).token)
     end
-    
+
     def test_payPal_transactionId
       assert_equal("b", PayPal.from_hash({'payPal'=>{'payerId'=>'a','transactionId'=>'b'}}).transactionId)
       exception = assert_raise(RuntimeError){
         PayPal.from_hash({ 'payPal'=>{'payerId'=>'a'}})
       }
-      assert_equal "If payPal is specified, it must have a transactionId", exception.message            
+      assert_equal "If payPal is specified, it must have a transactionId", exception.message
     end
 
     def test_creditPaypal_payerId
@@ -2195,9 +2195,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CreditPayPal.from_hash({ 'creditPaypal'=>{'payerId'=>'123456789012345678','payerEmail'=>'b'}})
       }
-      assert_equal "If creditPaypal payerId is specified, it must be between 1 and 17 characters long", exception.message                  
+      assert_equal "If creditPaypal payerId is specified, it must be between 1 and 17 characters long", exception.message
     end
-    
+
     def test_creditPaypal_payerEmail
       assert_equal(nil, CreditPayPal.from_hash({'creditPaypal'=>{'payerId'=>'a'}}).payerEmail)
       assert_equal("b", CreditPayPal.from_hash({'creditPaypal'=>{'payerId'=>'a','payerEmail'=>'b'}}).payerEmail)
@@ -2205,65 +2205,65 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         CreditPayPal.from_hash({ 'creditPaypal'=>{'payerId'=>'1','payerEmail'=>'12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678'}})
       }
-      assert_equal "If creditPaypal payerEmail is specified, it must be between 1 and 127 characters long", exception.message                  
+      assert_equal "If creditPaypal payerEmail is specified, it must be between 1 and 127 characters long", exception.message
     end
 
     def test_customBilling_phone
       assert_equal(nil, CustomBilling.from_hash({'customBilling'=>{}}).phone)
       assert_equal("1", CustomBilling.from_hash({'customBilling'=>{'phone'=>'1'}}).phone)
-      assert_equal("1234567890123", CustomBilling.from_hash({'customBilling'=>{'phone'=>'1234567890123'}}).phone)      
+      assert_equal("1234567890123", CustomBilling.from_hash({'customBilling'=>{'phone'=>'1234567890123'}}).phone)
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'phone'=>'12345678901234'}})
       }
-      assert_equal "If customBilling phone is specified, it must match the regular expression /\\A\\d{1,13}\\Z/", exception.message                  
+      assert_equal "If customBilling phone is specified, it must match the regular expression /\\A\\d{1,13}\\Z/", exception.message
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'phone'=>'abc'}})
       }
-      assert_equal "If customBilling phone is specified, it must match the regular expression /\\A\\d{1,13}\\Z/", exception.message                  
+      assert_equal "If customBilling phone is specified, it must match the regular expression /\\A\\d{1,13}\\Z/", exception.message
     end
 
     def test_customBilling_city
       assert_equal(nil, CustomBilling.from_hash({'customBilling'=>{}}).city)
       assert_equal("a", CustomBilling.from_hash({'customBilling'=>{'city'=>'a'}}).city)
-      assert_equal("12345678901234567890123456789012345", CustomBilling.from_hash({'customBilling'=>{'city'=>'12345678901234567890123456789012345'}}).city)      
+      assert_equal("12345678901234567890123456789012345", CustomBilling.from_hash({'customBilling'=>{'city'=>'12345678901234567890123456789012345'}}).city)
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'city'=>'123456789012345678901234567890123456'}})
       }
       assert_equal "If customBilling city is specified, it must be between 1 and 35 characters long", exception.message
     end
-    
+
     def test_customBilling_url
       assert_equal(nil, CustomBilling.from_hash({'customBilling'=>{}}).url)
       assert_equal("1", CustomBilling.from_hash({'customBilling'=>{'url'=>'1'}}).url)
-      assert_equal("1234567890123", CustomBilling.from_hash({'customBilling'=>{'url'=>'1234567890123'}}).url)      
+      assert_equal("1234567890123", CustomBilling.from_hash({'customBilling'=>{'url'=>'1234567890123'}}).url)
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'url'=>'12345678901234'}})
       }
-      assert_equal "If customBilling url is specified, it must match the regular expression /\\A([A-Z,a-z,0-9,\\/,\\-,_,.]){1,13}\\Z/", exception.message                  
+      assert_equal "If customBilling url is specified, it must match the regular expression /\\A([A-Z,a-z,0-9,\\/,\\-,_,.]){1,13}\\Z/", exception.message
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'url'=>'^&*(%$#@'}})
       }
-      assert_equal "If customBilling url is specified, it must match the regular expression /\\A([A-Z,a-z,0-9,\\/,\\-,_,.]){1,13}\\Z/", exception.message                  
+      assert_equal "If customBilling url is specified, it must match the regular expression /\\A([A-Z,a-z,0-9,\\/,\\-,_,.]){1,13}\\Z/", exception.message
     end
-    
+
     def test_customBilling_descriptor
       assert_equal(nil, CustomBilling.from_hash({'customBilling'=>{}}).descriptor)
       assert_equal("abcd", CustomBilling.from_hash({'customBilling'=>{'descriptor'=>'abcd'}}).descriptor)
-      assert_equal("1234567890123456789012345", CustomBilling.from_hash({'customBilling'=>{'descriptor'=>'1234567890123456789012345'}}).descriptor)      
+      assert_equal("1234567890123456789012345", CustomBilling.from_hash({'customBilling'=>{'descriptor'=>'1234567890123456789012345'}}).descriptor)
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'descriptor'=>'12345678901234567890123456'}})
       }
-      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message                  
+      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'descriptor'=>'123'}})
       }
-      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message                  
+      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message
       exception = assert_raise(RuntimeError){
         CustomBilling.from_hash({ 'customBilling'=>{'descriptor'=>'^&*(%$#@'}})
       }
-      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message                  
+      assert_equal "If customBilling descriptor is specified, it must match the regular expression /\\A([A-Z,a-z,0-9, ,\\*,,,\\-,',#,&,.]){4,25}\\Z/", exception.message
     end
-    
+
     def test_processingInstructions_bypassVelocityCheck
       assert_equal(nil, ProcessingInstructions.from_hash({'processingInstructions'=>{}}).bypassVelocityCheck)
       assert_equal("true", ProcessingInstructions.from_hash({'processingInstructions'=>{'bypassVelocityCheck'=>'true'}}).bypassVelocityCheck)
@@ -2275,37 +2275,37 @@ module LitleOnline
       }
       assert_equal "If processingInstructions bypassVelocityCheck is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_echeckForToken_accNum
       assert_equal("a", EcheckForToken.from_hash({'echeckForToken'=>{'accNum'=>'a','routingNum'=>'123456789'}}).accNum)
       assert_equal("12345678901234567", EcheckForToken.from_hash({'echeckForToken'=>{'accNum'=>'12345678901234567','routingNum'=>'123456789'}}).accNum)
       exception = assert_raise(RuntimeError){
         EcheckForToken.from_hash({ 'echeckForToken'=>{'accNum'=>'123456789012345678','routingNum'=>'123456789'}})
       }
-      assert_equal "If echeckForToken accNum is specified, it must be between 1 and 17 characters long", exception.message            
+      assert_equal "If echeckForToken accNum is specified, it must be between 1 and 17 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckForToken.from_hash({ 'echeckForToken'=>{'routingNum'=>'123456789'}})
       }
-      assert_equal "If echeckForToken is specified, it must have a accNum", exception.message            
+      assert_equal "If echeckForToken is specified, it must have a accNum", exception.message
     end
-    
+
     def test_echeckForToken_routingNum
       assert_equal("123456789", EcheckForToken.from_hash({'echeckForToken'=>{'accNum'=>'1','routingNum'=>'123456789'}}).routingNum)
       assert_equal("abcdefghi", EcheckForToken.from_hash({'echeckForToken'=>{'accNum'=>'1','routingNum'=>'abcdefghi'}}).routingNum)
       exception = assert_raise(RuntimeError){
         EcheckForToken.from_hash({ 'echeckForToken'=>{'accNum'=>'1','routingNum'=>'12345678'}})
       }
-      assert_equal "If echeckForToken routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeckForToken routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckForToken.from_hash({ 'echeckForToken'=>{'accNum'=>'1','routingNum'=>'1234567890'}})
       }
-      assert_equal "If echeckForToken routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeckForToken routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckForToken.from_hash({ 'echeckForToken'=>{'accNum'=>'1'}})
       }
-      assert_equal "If echeckForToken is specified, it must have a routingNum", exception.message            
+      assert_equal "If echeckForToken is specified, it must have a routingNum", exception.message
     end
-    
+
     def test_filtering_prepaid
       assert_equal(nil, Filtering.from_hash({'filtering'=>{}}).prepaid)
       assert_equal("true", Filtering.from_hash({'filtering'=>{'prepaid'=>'true'}}).prepaid)
@@ -2317,7 +2317,7 @@ module LitleOnline
       }
       assert_equal "If filtering prepaid is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_filtering_international
       assert_equal(nil, Filtering.from_hash({'filtering'=>{}}).international)
       assert_equal("true", Filtering.from_hash({'filtering'=>{'international'=>'true'}}).international)
@@ -2329,7 +2329,7 @@ module LitleOnline
       }
       assert_equal "If filtering international is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_filtering_chargeback
       assert_equal(nil, Filtering.from_hash({'filtering'=>{}}).chargeback)
       assert_equal("true", Filtering.from_hash({'filtering'=>{'chargeback'=>'true'}}).chargeback)
@@ -2341,37 +2341,37 @@ module LitleOnline
       }
       assert_equal "If filtering chargeback is specified, it must be in [\"true\", \"false\", \"1\", \"0\"]", exception.message
     end
-    
+
     def test_merchantData_campaign
       assert_equal(nil, MerchantData.from_hash({'merchantData'=>{}}).campaign)
       assert_equal("a", MerchantData.from_hash({'merchantData'=>{'campaign'=>'a'}}).campaign)
-      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'campaign'=>'1234567890123456789012345'}}).campaign)      
+      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'campaign'=>'1234567890123456789012345'}}).campaign)
       exception = assert_raise(RuntimeError){
         MerchantData.from_hash({ 'merchantData'=>{'campaign'=>'12345678901234567890123456'}})
       }
       assert_equal "If merchantData campaign is specified, it must be between 1 and 25 characters long", exception.message
     end
-    
+
     def test_merchantData_affiliate
       assert_equal(nil, MerchantData.from_hash({'merchantData'=>{}}).affiliate)
       assert_equal("a", MerchantData.from_hash({'merchantData'=>{'affiliate'=>'a'}}).affiliate)
-      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'affiliate'=>'1234567890123456789012345'}}).affiliate)      
+      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'affiliate'=>'1234567890123456789012345'}}).affiliate)
       exception = assert_raise(RuntimeError){
         MerchantData.from_hash({ 'merchantData'=>{'affiliate'=>'12345678901234567890123456'}})
       }
       assert_equal "If merchantData affiliate is specified, it must be between 1 and 25 characters long", exception.message
     end
-    
+
     def test_merchantData_merchantGroupingId
       assert_equal(nil, MerchantData.from_hash({'merchantData'=>{}}).merchantGroupingId)
       assert_equal("a", MerchantData.from_hash({'merchantData'=>{'merchantGroupingId'=>'a'}}).merchantGroupingId)
-      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'merchantGroupingId'=>'1234567890123456789012345'}}).merchantGroupingId)      
+      assert_equal("1234567890123456789012345", MerchantData.from_hash({'merchantData'=>{'merchantGroupingId'=>'1234567890123456789012345'}}).merchantGroupingId)
       exception = assert_raise(RuntimeError){
         MerchantData.from_hash({ 'merchantData'=>{'merchantGroupingId'=>'12345678901234567890123456'}})
       }
       assert_equal "If merchantData merchantGroupingId is specified, it must be between 1 and 25 characters long", exception.message
     end
-    
+
     def test_echeck_accType
       assert_equal("Checking", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'2','routingNum'=>'123456789'}}).accType)
       assert_equal("Savings", Echeck.from_hash({'echeck'=>{'accType'=>'Savings','accNum'=>'2','routingNum'=>'123456789'}}).accType)
@@ -2380,47 +2380,47 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'1','routingNum'=>'123456789'}})
       }
-      assert_equal "If echeck is specified, it must have a accType", exception.message            
+      assert_equal "If echeck is specified, it must have a accType", exception.message
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'1','routingNum'=>'123456789','accType'=>'Other'}})
       }
-      assert_equal "If echeck accType is specified, it must be in [\"Checking\", \"Savings\", \"Corporate\", \"Corp Savings\"]", exception.message            
+      assert_equal "If echeck accType is specified, it must be in [\"Checking\", \"Savings\", \"Corporate\", \"Corp Savings\"]", exception.message
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'1','routingNum'=>'123456789'}})
       }
-      assert_equal "If echeck is specified, it must have a accType", exception.message            
+      assert_equal "If echeck is specified, it must have a accType", exception.message
     end
-    
+
     def test_echeck_accNum
       assert_equal("a", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'a','routingNum'=>'123456789'}}).accNum)
       assert_equal("12345678901234567", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'12345678901234567','routingNum'=>'123456789'}}).accNum)
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'123456789012345678','routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If echeck accNum is specified, it must be between 1 and 17 characters long", exception.message            
+      assert_equal "If echeck accNum is specified, it must be between 1 and 17 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If echeck is specified, it must have a accNum", exception.message            
+      assert_equal "If echeck is specified, it must have a accNum", exception.message
     end
-    
+
     def test_echeck_routingNum
       assert_equal("abcdefghi", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'a','routingNum'=>'abcdefghi'}}).routingNum)
       assert_equal("123456789", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'12345678901234567','routingNum'=>'123456789'}}).routingNum)
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'123','routingNum'=>'1234567890','accType'=>'Checking'}})
       }
-      assert_equal "If echeck routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeck routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'123','routingNum'=>'12345678','accType'=>'Checking'}})
       }
-      assert_equal "If echeck routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeck routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'123','accType'=>'Checking'}})
       }
-      assert_equal "If echeck is specified, it must have a routingNum", exception.message            
+      assert_equal "If echeck is specified, it must have a routingNum", exception.message
     end
-    
+
     def test_echeck_checkNum
       assert_equal(nil, Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'b','routingNum'=>'abcdefghi'}}).checkNum)
       assert_equal("a", Echeck.from_hash({'echeck'=>{'accType'=>'Checking','accNum'=>'b','routingNum'=>'abcdefghi','checkNum'=>'a'}}).checkNum)
@@ -2428,43 +2428,43 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Echeck.from_hash({ 'echeck'=>{'accNum'=>'123','routingNum'=>'123456789','accType'=>'Checking','checkNum'=>'1234567890123456'}})
       }
-      assert_equal "If echeck checkNum is specified, it must be between 1 and 15 characters long", exception.message            
+      assert_equal "If echeck checkNum is specified, it must be between 1 and 15 characters long", exception.message
     end
-    
+
     def test_echeckToken_litleToken
       assert_equal("abcdefhijklmn", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'abcdefhijklmn','routingNum'=>'123456789'}}).litleToken)
       assert_equal("1234567890123456789012345", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123456789012345','routingNum'=>'123456789'}}).litleToken)
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'123456789012','routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken litleToken is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If echeckToken litleToken is specified, it must be between 13 and 25 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'12345678901234567890123456','routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken litleToken is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If echeckToken litleToken is specified, it must be between 13 and 25 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken is specified, it must have a litleToken", exception.message            
+      assert_equal "If echeckToken is specified, it must have a litleToken", exception.message
     end
-    
+
     def test_echeckToken_routingNum
       assert_equal("abcdefghi", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123','routingNum'=>'abcdefghi'}}).routingNum)
       assert_equal("123456789", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123','routingNum'=>'123456789'}}).routingNum)
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','routingNum'=>'1234567890','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeckToken routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','routingNum'=>'12345678','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken routingNum is specified, it must be between 9 and 9 characters long", exception.message            
+      assert_equal "If echeckToken routingNum is specified, it must be between 9 and 9 characters long", exception.message
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','accType'=>'Checking'}})
       }
-      assert_equal "If echeckToken is specified, it must have a routingNum", exception.message            
+      assert_equal "If echeckToken is specified, it must have a routingNum", exception.message
     end
-    
+
     def test_echeckToken_accType
       assert_equal("Checking", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123','routingNum'=>'123456789'}}).accType)
       assert_equal("Savings", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Savings','litleToken'=>'1234567890123','routingNum'=>'123456789'}}).accType)
@@ -2473,13 +2473,13 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','routingNum'=>'123456789','accType'=>'Other'}})
       }
-      assert_equal "If echeckToken accType is specified, it must be in [\"Checking\", \"Savings\", \"Corporate\", \"Corp Savings\"]", exception.message            
+      assert_equal "If echeckToken accType is specified, it must be in [\"Checking\", \"Savings\", \"Corporate\", \"Corp Savings\"]", exception.message
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','routingNum'=>'123456789'}})
       }
-      assert_equal "If echeckToken is specified, it must have a accType", exception.message            
+      assert_equal "If echeckToken is specified, it must have a accType", exception.message
     end
-    
+
     def test_echeckToken_checkNum
       assert_equal(nil, EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123','routingNum'=>'abcdefghi'}}).checkNum)
       assert_equal("a", EcheckToken.from_hash({'echeckToken'=>{'accType'=>'Checking','litleToken'=>'1234567890123','routingNum'=>'abcdefghi','checkNum'=>'a'}}).checkNum)
@@ -2487,9 +2487,9 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         EcheckToken.from_hash({ 'echeckToken'=>{'litleToken'=>'1234567890123','routingNum'=>'123456789','accType'=>'Checking','checkNum'=>'1234567890123456'}})
       }
-      assert_equal "If echeckToken checkNum is specified, it must be between 1 and 15 characters long", exception.message            
+      assert_equal "If echeckToken checkNum is specified, it must be between 1 and 15 characters long", exception.message
     end
-    
+
     def test_recyclingRequest_recycleBy
       assert_equal(nil, RecyclingRequest.from_hash({'recyclingRequest'=>{}}).recycleBy)
       assert_equal("Merchant", RecyclingRequest.from_hash({'recyclingRequest'=>{'recycleBy'=>'Merchant'}}).recycleBy)
@@ -2500,7 +2500,7 @@ module LitleOnline
       }
       assert_equal "If recyclingRequest recycleBy is specified, it must be in [\"Merchant\", \"Litle\", \"None\"]", exception.message
     end
-    
+
     def test_recyclingRequest_recycleId
       assert_equal(nil, RecyclingRequest.from_hash({'recyclingRequest'=>{}}).recycleId)
       assert_equal("a", RecyclingRequest.from_hash({'recyclingRequest'=>{'recycleId'=>'a'}}).recycleId)
@@ -2517,15 +2517,15 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Token.from_hash({ 'token'=>{'litleToken'=>'123456789012','routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If token litleToken is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If token litleToken is specified, it must be between 13 and 25 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Token.from_hash({ 'token'=>{'litleToken'=>'12345678901234567890123456','routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If token litleToken is specified, it must be between 13 and 25 characters long", exception.message            
+      assert_equal "If token litleToken is specified, it must be between 13 and 25 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Token.from_hash({ 'token'=>{'routingNum'=>'123456789','accType'=>'Checking'}})
       }
-      assert_equal "If token is specified, it must have a litleToken", exception.message            
+      assert_equal "If token is specified, it must have a litleToken", exception.message
     end
 
     def test_Token_expDate
@@ -2535,21 +2535,21 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         Token.from_hash({ 'token'=>{'litleToken'=>'1234567890123456789012345', 'expDate'=>'123'}})
       }
-      assert_equal "If token expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If token expDate is specified, it must be between 4 and 4 characters long", exception.message
       exception = assert_raise(RuntimeError){
         Token.from_hash({ 'token'=>{'litleToken'=>'1234567890123456789012345', 'expDate'=>'12345'}})
       }
-      assert_equal "If token expDate is specified, it must be between 4 and 4 characters long", exception.message            
+      assert_equal "If token expDate is specified, it must be between 4 and 4 characters long", exception.message
     end
 
     def test_Token_cardValidationNum
       assert_equal(nil, Card.from_hash({'card'=>{'litleToken'=>'1234567890123456789012345'}}).cardValidationNum)
       assert_equal("a", Card.from_hash({'card'=>{'litleToken'=>'1234567890123456789012345', 'cardValidationNum'=>'a'}}).cardValidationNum)
-      assert_equal("1234", Card.from_hash({'card'=>{'litleToken'=>'1234567890123456789012345', 'cardValidationNum'=>'1234'}}).cardValidationNum)      
+      assert_equal("1234", Card.from_hash({'card'=>{'litleToken'=>'1234567890123456789012345', 'cardValidationNum'=>'1234'}}).cardValidationNum)
       exception = assert_raise(RuntimeError){
         Card.from_hash({ 'card'=>{'litleToken'=>'1234567890123456789012345', 'cardValidationNum'=>'12345'}})
       }
-      assert_equal "If card cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message                  
+      assert_equal "If card cardValidationNum is specified, it must be between 1 and 4 characters long", exception.message
     end
 
     def test_AccountUpdate_orderId
@@ -2566,7 +2566,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){
         AccountUpdate.from_hash({ 'accountUpdate' => [{'orderId' => '1'*51}] }, 0)
       }
-      assert_equal "If accountUpdate orderId is specified, it must be between 1 and 25 characters long", exception.message                  
+      assert_equal "If accountUpdate orderId is specified, it must be between 1 and 25 characters long", exception.message
     end
 
     def test_BatchRequest_accountUpdate

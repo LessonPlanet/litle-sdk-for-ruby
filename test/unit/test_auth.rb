@@ -22,13 +22,13 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'mocha'
 
 #test Authorization Transaction
-module LitleOnline
-  
+module OldLitleOnline
+
   class TestAuth < Test::Unit::TestCase
     def test_success_re_auth
       hash = {
@@ -37,12 +37,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'litleTxnId'=>'123456'
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-  
-  
+
+
     def test_both_choices_card_and_paypal
       hash = {
         'merchantId' => '101',
@@ -61,11 +61,11 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_three_choices_card_and_paypage_and_paypal
       hash = {
         'merchantId' => '101',
@@ -92,7 +92,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_all_choices_card_and_paypage_and_paypal_and_token
       hash = {
         'merchantId' => '101',
@@ -124,11 +124,11 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_merchant_data_auth
       hash = {
         'merchantId' => '101',
@@ -141,12 +141,12 @@ module LitleOnline
           'campaign'=>'foo'
         }
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<merchantData>.*?<campaign>foo<\/campaign>.*?<\/merchantData>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-    
+
     def test_fraud_filter_override
       hash = {
         'merchantId' => '101',
@@ -157,12 +157,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'fraudFilterOverride'=> 'true'
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<authorization.*?<fraudFilterOverride>true<\/fraudFilterOverride>.*?<\/authorization>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-    
+
     def test_pos_without_capability
       hash = {
         'merchantId' => '101',
@@ -196,7 +196,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
       assert_match /If paypal is specified, it must have a payerId/, exception.message
     end
-    
+
     def test_paypal_missing_transaction_id
       hash = {
         'merchantId' => '101',
@@ -230,7 +230,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.authorization(hash)}
       assert_match /If pos is specified, it must have a entryMode/, exception.message
     end
-    
+
     def test_auth_override_username
       hash = {
         'merchantId' => '101',
@@ -243,7 +243,7 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'fraudFilterOverride'=> 'true'
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<user>UNIT<\/user>.*?<\/authentication>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
@@ -261,12 +261,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'fraudFilterOverride'=> 'true'
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<authentication.*?<password>TEST<\/password>.*?<\/authentication>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-    
+
     def test_logged_in_user
       hash = {
       	'merchantSdk' => 'Ruby;8.14.0',
@@ -276,11 +276,11 @@ module LitleOnline
         'litleTxnId'=>'123456',
         'loggedInUser'=>'gdake'
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.authorization(hash)
     end
-          
+
   end
 
 end

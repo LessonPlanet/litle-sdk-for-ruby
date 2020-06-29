@@ -26,7 +26,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 #Sample Driver
-require 'LitleOnline'
+require 'OldLitleOnline'
 
 hash = {
   'reportGroup'=>'product1',

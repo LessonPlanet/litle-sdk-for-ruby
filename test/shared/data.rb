@@ -1,4 +1,4 @@
-module LitleOnline
+module OldLitleOnline
   class TestSharedData
 
     CERTIFICATION_URL = 'https://cert.litle.com:15000'

@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestAuthReversal < Test::Unit::TestCase
     def test_simple_echeck_void
       hash = {
@@ -36,6 +36,6 @@ module LitleOnline
       }
       response= LitleOnlineRequest.new.echeck_void(hash)
       assert_equal('Approved', response.echeckVoidResponse.message)
-    end  
+    end
   end
 end

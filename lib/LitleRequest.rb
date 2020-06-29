@@ -29,7 +29,7 @@ require_relative 'Configuration'
 # It also handles validation looking for missing or incorrect fields
 #contains the methods to properly create each batch type
 #
-module LitleOnline
+module OldLitleOnline
 
   class LitleRequest
     attr_reader :num_batch_requests
@@ -113,7 +113,7 @@ module LitleOnline
     def get_config(field, options)
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
     end
-    
+
     def get_id(options)
       options['id'] || nil
     end

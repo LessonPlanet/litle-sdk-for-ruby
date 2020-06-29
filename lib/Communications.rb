@@ -29,21 +29,21 @@ OTHER DEALINGS IN THE SOFTWARE.
 #
 # URL and proxy server settings are derived from the configuration file
 #
-module LitleOnline
+module OldLitleOnline
   class Communications
     ##For http or https post with or without a proxy
     def Communications.http_post(post_data,config_hash)
-  
+
       proxy_addr = config_hash['proxy_addr']
       proxy_port = config_hash['proxy_port']
       litle_url = config_hash['url']
-  
+
       # setup https or http post
       url = URI.parse(litle_url)
-  
-      response_xml = nil    
+
+      response_xml = nil
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
-      if(url.scheme == 'https') 
+      if(url.scheme == 'https')
         https.use_ssl = url.scheme=='https'
         https.verify_mode = OpenSSL::SSL::VERIFY_PEER
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
@@ -53,7 +53,7 @@ module LitleOnline
         response = http.request_post(url_path, post_data.to_s, {'Content-type'=>'text/xml'})
         response_xml = response
       }
-      
+
       # validate response, only an HTTP 200 will work, redirects are not followed
       case response_xml
       when Net::HTTPOK
@@ -72,15 +72,15 @@ end
   The round-trip time of an Authorization can be broken down into three parts, as follows:
     1.  Transmission time (across the internet) to Litle & Co. and back to the merchant
     2.  Processing time by the authorization provider
-    3.  Processing time by Litle 
-  Under normal operating circumstances, the transmission time to and from Litle does not exceed 0.6 seconds 
-  and processing overhead by Litle occurs in 0.1 seconds. 
+    3.  Processing time by Litle
+  Under normal operating circumstances, the transmission time to and from Litle does not exceed 0.6 seconds
+  and processing overhead by Litle occurs in 0.1 seconds.
   Typically, the processing time by the card association or authorization provider can take between 0.5 and 3 seconds,
   but some percentage of transactions may take significantly longer.
- 
+
   Because the total processing time can vary due to a number of factors, Litle & Co. recommends using a minimum timeout setting of
   60 seconds to accomodate Sale transactions and 30 seconds if you are not utilizing Sale tranactions.
 
-  These settings should ensure that you do not frequently disconnect prior to receiving a valid authorization causing dropped orders 
+  These settings should ensure that you do not frequently disconnect prior to receiving a valid authorization causing dropped orders
   and/or re-auths and duplicate auths.
 =end

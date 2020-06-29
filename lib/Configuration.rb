@@ -28,7 +28,7 @@ require 'yaml'
 #
 # Loads the configuration from a file
 #
-module LitleOnline
+module OldLitleOnline
   class Configuration
     def config
       begin
@@ -41,7 +41,7 @@ module LitleOnline
       rescue
         return {}
       end
-  
+
     end
   end
 end

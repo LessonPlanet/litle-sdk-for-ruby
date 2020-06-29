@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestUpdateCardValidationNumOnToken < Test::Unit::TestCase
     def test_simple
       hash = {
@@ -36,7 +36,7 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<orderId>1.*<litleToken>1233456789101112.*<cardValidationNum>123.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_card_validation_num_on_token(hash)
     end
-    
+
     def test_order_id_is_optional
       hash = {
         'litleToken'=>'1233456789101112',
@@ -45,7 +45,7 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleToken>1233456789101112.*<cardValidationNum>123.*/m), is_a(Hash))
       LitleOnlineRequest.new.update_card_validation_num_on_token(hash)
     end
-    
+
     def test_litle_token_is_required
       hash = {
         'orderId'=>'12344',
@@ -54,7 +54,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.update_card_validation_num_on_token(hash)}
       assert_match /If updateCardValidationNumOnToken is specified, it must have a litleToken/, exception.message
     end
-    
+
     def test_card_validation_num_is_required
       hash = {
         'orderId'=>'12344',

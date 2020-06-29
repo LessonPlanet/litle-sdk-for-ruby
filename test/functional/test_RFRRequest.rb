@@ -1,8 +1,8 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'test/shared/data'
 
-module LitleOnline
+module OldLitleOnline
   class TestRFRRequest < Test::Unit::TestCase
     def test_response_account_update_file_not_ready
       hash = request_for_response.merge(TestSharedData.real_certification_hash)

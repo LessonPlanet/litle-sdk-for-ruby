@@ -29,7 +29,7 @@ require 'rake/clean'
 
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
-  s.name = "LitleOnline"
+  s.name = "OldLitleOnline"
   s.summary = "Ruby SDK produced by Litle & Co. for online transaction processing using Litle XML format v8.15"
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
@@ -77,14 +77,14 @@ namespace :test do
     t.test_files = FileList['test/certification/ts_all.rb']
     t.verbose = true
   end
-  
+
   Rake::TestTask.new do |t|
     t.libs << '.'
     t.name = 'all'
     t.test_files = FileList['test/**/*.rb']
     t.verbose = true
   end
-  
+
 end
 
 task :default =>'gem'

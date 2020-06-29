@@ -1,10 +1,10 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 
 #require 'Litle_activemerchant'
 require 'test/unit'
 require 'test/shared/data'
 
-module LitleOnline
+module OldLitleOnline
   class Litle_certTest6 < Test::Unit::TestCase
     def test_batch_request_account_updater_transactions
       customer_hash = {

@@ -1,8 +1,8 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'test/shared/data'
 
-module LitleOnline
+module OldLitleOnline
   class TestAccountUpdater < Test::Unit::TestCase
     def test_request_valid_format
       hash = batch_request_approved.merge(TestSharedData.real_certification_hash)

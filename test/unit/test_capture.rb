@@ -22,16 +22,16 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Test_capture < Test::Unit::TestCase
     def test_success_capture
       hash = {
         'litleTxnId'=>'123456'
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>123456<\/litleTxnId>.*/m), is_a(Hash))
       LitleOnlineRequest.new.capture(hash)
     end
@@ -41,7 +41,7 @@ module LitleOnline
         'litleTxnId'=>'123456',
         'loggedInUser'=>'gdake'
       }
-  
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.capture(hash)
     end

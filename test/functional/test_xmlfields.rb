@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestXmlfields < Test::Unit::TestCase
     def test_card_no_required_type_or_track
       hash = {
@@ -44,7 +44,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_simple_custom_billing
       hash = {
         'merchantId' => '101',
@@ -63,7 +63,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_bill_me_later
       hash = {
         'merchantId' => '101',
@@ -83,7 +83,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test__customer_info
       hash = {
         'merchantId' => '101',
@@ -102,7 +102,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_bill_to_address
       hash = {
         'merchantId' => '101',
@@ -120,7 +120,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_processing_instructions
       hash = {
         'merchantId' => '101',
@@ -138,7 +138,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_pos
       hash = {
         'merchantId' => '101',
@@ -156,7 +156,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_amex_data
       hash = {
         'merchantId' => '101',
@@ -174,7 +174,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_amex_data_missing_seller_id
       hash = {
         'merchantId' => '101',
@@ -192,7 +192,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_simple_enhanced_data
       hash = {
         'merchantId' => '101',
@@ -216,7 +216,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_enhanced_data_with_detail_tax
       hash = {
         'merchantId' => '101',
@@ -241,7 +241,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_enhanced_data_with_line_item
       hash = {
         'merchantId' => '101',
@@ -272,7 +272,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_token
       hash = {
         'merchantId' => '101',
@@ -290,7 +290,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_token_missing_exp_dat_and_valid_num
       hash = {
         'merchantId' => '101',
@@ -306,7 +306,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_paypage
       hash = {
         'merchantId' => '101',
@@ -324,7 +324,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_paypage_missing_exp_dat_and_valid_num
       hash = {
         'merchantId' => '101',
@@ -340,7 +340,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-    
+
     def test_cardbothtypeandtrack
       hash = {
         'merchantId' => '101',
@@ -359,7 +359,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-    
+
     def test_line_item_data
       hash = {
         'merchantId' => '101',
@@ -384,7 +384,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_detail_tax
       hash = {
         'merchantId' => '101',
@@ -409,7 +409,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.authorization(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_detail_tax_in_lineItem
       hash = {
         'merchantId' => '101',
@@ -423,7 +423,7 @@ module LitleOnline
         'number' =>'4100000000000001',
         'expDate' =>'1210'
         },
-        'enhancedData'=>      
+        'enhancedData'=>
         {
         'lineItemData'=>[
         {'itemSequenceNumber'=>'1', 'itemDescription'=>'desc1','detailTax'=>[

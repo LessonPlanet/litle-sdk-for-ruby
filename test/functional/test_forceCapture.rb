@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestForceCapture < Test::Unit::TestCase
     def test_simple_force_capture_with_card
       hash = {
@@ -44,7 +44,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert_equal('000', response.forceCaptureResponse.response)
     end
-  
+
     def test_simple_force_capture_with_token
       hash = {
         'merchantId' => '101',
@@ -63,7 +63,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -82,7 +82,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -101,7 +101,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_no_order_id
       hash = {
         'merchantId' => '101',
@@ -119,7 +119,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_source
       hash = {
         'merchantId' => '101',
@@ -136,7 +136,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.force_capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
   end
 
 end

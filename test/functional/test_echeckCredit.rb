@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Test_echeckCredit < Test::Unit::TestCase
     def test_simple_echeckcredit
       hash = {
@@ -38,7 +38,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -48,7 +48,7 @@ module LitleOnline
       response = LitleOnlineRequest.new.echeck_credit(hash)
       assert_match /The content of element 'echeckCredit' is not complete/, response.message
     end
-  
+
     def test_echeck_credit_with_echeck
       hash = {
         'merchantId' => '101',
@@ -64,7 +64,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_echeck_credit_with_echeck_token
       hash = {
         'merchantId' => '101',
@@ -80,7 +80,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_incorrect_order
       hash = {
         'merchantId' => '101',
@@ -97,7 +97,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_missing_billing
       hash = {
         'merchantId' => '101',

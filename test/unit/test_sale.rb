@@ -22,13 +22,13 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'mocha'
 
-module LitleOnline
+module OldLitleOnline
   class TestSale < Test::Unit::TestCase
-  
+
     def test_both_choices_fraud_check_and_card_holder
       hash = {
         'merchantId' => '101',
@@ -45,11 +45,11 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_both_choices_card_and_paypal
       hash = {
         'merchantId' => '101',
@@ -71,11 +71,11 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_both_choices_card_and_token
       hash = {
         'merchantId' => '101',
@@ -98,11 +98,11 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_both_choices_card_and_paypage
       hash = {
         'merchantId' => '101',
@@ -125,11 +125,11 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_three_choices_card_and_paypage_and_paypal
       hash = {
         'merchantId' => '101',
@@ -156,11 +156,11 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_all_choices_card_and_paypage_and_paypal_and_token
       hash = {
         'merchantId' => '101',
@@ -195,7 +195,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_merchant_data_sale
       hash = {
         'merchantId' => '101',
@@ -208,12 +208,12 @@ module LitleOnline
           'affiliate'=>'bar'
         }
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<merchantData>.*?<affiliate>bar<\/affiliate>.*?<\/merchantData>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
-  
+
     def test_invalid_embedded_field_values
       #becasue there are sub fields under fraud check that are not specified
       hash = {
@@ -233,7 +233,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.sale(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-    
+
     def test_fraud_filter_override
       hash = {
         'merchantId' => '101',
@@ -244,12 +244,12 @@ module LitleOnline
         'reportGroup'=>'Planets',
         'fraudFilterOverride'=> 'false'
       }
-    
+
       XMLObject.expects(:new)
       Communications.expects(:http_post).with(regexp_matches(/.*<sale.*?<fraudFilterOverride>false<\/fraudFilterOverride>.*?<\/sale>.*/m),kind_of(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
-    
+
     def test_illegal_card_type
       hash = {
         'merchantId' => '101',
@@ -284,10 +284,10 @@ module LitleOnline
         'number' =>'4100000000000002',
         'expDate' =>'1210'
       }}
-    
+
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.sale(hash)
     end
-          
+
   end
 end

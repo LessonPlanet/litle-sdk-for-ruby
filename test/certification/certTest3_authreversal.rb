@@ -1,13 +1,13 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Litle_certTest3 < Test::Unit::TestCase
     #test auth reversal
     @@merchant_hash = {'reportGroup'=>'Planets','id'=>'321','customerId'=>'123',
       'merchantId'=>'101'
     }
-  
+
     def test_32
       customer_hash = {
         'orderId' => '32',
@@ -33,14 +33,14 @@ module LitleOnline
       assert_equal('11111 ', auth_response.authorizationResponse.authCode)
       assert_equal('01', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 32A
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '5005'}
       hash1a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash1a)
       assert_equal('000', capture_response.captureResponse.response)
       assert_equal('Approved', capture_response.captureResponse.message)
-  
+
       #test 32B
       auth_r_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId }
       hash1b = auth_r_hash.merge(@@merchant_hash)
@@ -48,7 +48,7 @@ module LitleOnline
       assert_equal('111', auth_r_response.authReversalResponse.response)
       assert_equal('Authorization amount has already been depleted', auth_r_response.authReversalResponse.message)
     end
-  
+
     def test_33
       customer_hash = {
         'orderId' => '33',
@@ -76,7 +76,7 @@ module LitleOnline
       assert_equal('22222', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 33A
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
@@ -84,7 +84,7 @@ module LitleOnline
       assert_equal('000', auth_reversal_response.authReversalResponse.response)
       assert_equal('Approved', auth_reversal_response.authReversalResponse.message)
     end
-  
+
     def test_34
       customer_hash = {
         'orderId' => '34',
@@ -110,7 +110,7 @@ module LitleOnline
       assert_equal('33333', auth_response.authorizationResponse.authCode)
       assert_equal('10', auth_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', auth_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 34A
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
@@ -118,7 +118,7 @@ module LitleOnline
       assert_equal('000', auth_reversal_response.authReversalResponse.response)
       assert_equal('Approved', auth_reversal_response.authReversalResponse.message)
     end
-  
+
     def test_35
       customer_hash = {
         'orderId' => '35',
@@ -142,14 +142,14 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('44444', auth_response.authorizationResponse.authCode)
       assert_equal('12', auth_response.authorizationResponse.fraudResult.avsResult)
-  
+
       #    #test 35A
       capture_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash1a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash1a)
       assert_equal('000', capture_response.captureResponse.response)
       assert_equal('Approved', capture_response.captureResponse.message)
-  
+
       #    #test 35B
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash2a = auth_reversal_hash.merge(@@merchant_hash)
@@ -157,7 +157,7 @@ module LitleOnline
       assert_equal('000', auth_reversal_response.authReversalResponse.response)
       assert_equal('Approved', auth_reversal_response.authReversalResponse.message)
     end
-    
+
     def test_36
       customer_hash = {
         'orderId' => '36',
@@ -172,7 +172,7 @@ module LitleOnline
       auth_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
-  
+
       #test 36A
       auth_reversal_hash =  {'litleTxnId' => auth_response.authorizationResponse.litleTxnId, 'amount' => '10000'}
       hash1a = auth_reversal_hash.merge(@@merchant_hash)
@@ -180,6 +180,6 @@ module LitleOnline
       assert_equal('336', auth_reversal_response.authReversalResponse.response)
       assert_equal('Reversal Amount does not match Authorization amount', auth_reversal_response.authReversalResponse.message)
     end
-  
+
   end
 end

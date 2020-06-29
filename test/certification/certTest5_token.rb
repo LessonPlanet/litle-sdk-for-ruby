@@ -1,12 +1,12 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Litle_certTest5 < Test::Unit::TestCase
     @@merchant_hash = {'reportGroup'=>'Planets',
       'merchantId'=>'101'
     }
-  
+
     def test_50
       customer_hash = {
         'orderId' => '50',
@@ -20,7 +20,7 @@ module LitleOnline
       assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
       assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
     end
-  
+
     def test_51
       customer_hash = {
         'orderId' => '51',
@@ -31,7 +31,7 @@ module LitleOnline
       assert_equal('820', token_response.registerTokenResponse.response)
       assert_equal('Credit card number was invalid', token_response.registerTokenResponse.message)
     end
-  
+
     def test_52
       customer_hash = {
         'orderId' => '52',
@@ -45,7 +45,7 @@ module LitleOnline
       assert_equal('1111222233330123', token_response.registerTokenResponse.litleToken)
       assert_equal('Account number was previously registered', token_response.registerTokenResponse.message)
     end
-  
+
     def test_53
       customer_hash = {
         'orderId' => '53',
@@ -59,7 +59,7 @@ module LitleOnline
       assert_equal('Account number was successfully registered', token_response.registerTokenResponse.message)
       assert_equal('111922223333000998', token_response.registerTokenResponse.litleToken)
     end
-  
+
     def test_54
       customer_hash = {
         'orderId' => '54',
@@ -70,7 +70,7 @@ module LitleOnline
       assert_equal('900', token_response.registerTokenResponse.response)
       assert_equal('Invalid bank routing number', token_response.registerTokenResponse.message)
     end
-  
+
     def test_55
       customer_hash = {
         'orderId' => '55',
@@ -87,7 +87,7 @@ module LitleOnline
       assert_equal('MC', token_response.authorizationResponse.tokenResponse['type'])
       assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
     end
-  
+
     def test_56
       customer_hash = {
         'orderId' => '56',
@@ -100,7 +100,7 @@ module LitleOnline
       assert_equal('301', token_response.authorizationResponse.response)
       assert_equal('Invalid account number', token_response.authorizationResponse.message)
     end
-  
+
     def test_57
       customer_hash = {
         'orderId' => '57',
@@ -117,7 +117,7 @@ module LitleOnline
       assert_equal('MC', token_response.authorizationResponse.tokenResponse['type'])
       assert_equal('543510', token_response.authorizationResponse.tokenResponse.bin)
     end
-    
+
     def test_59
       customer_hash = {
         'orderId' => '59',
@@ -130,7 +130,7 @@ module LitleOnline
       assert_equal('822', token_response.authorizationResponse.response)
       assert_equal('Token was not found', token_response.authorizationResponse.message)
     end
-  
+
     def test_60
       customer_hash = {
         'orderId' => '60',
@@ -143,7 +143,7 @@ module LitleOnline
       assert_equal('823', token_response.authorizationResponse.response)
       assert_equal('Token was invalid', token_response.authorizationResponse.message)
     end
-  
+
     def test_61
       customer_hash = {
         'orderId' => '61',
@@ -162,7 +162,7 @@ module LitleOnline
       assert_equal('003', token_response.echeckSalesResponse.tokenResponse.eCheckAccountSuffix)
       assert_equal('111922223333444003', token_response.echeckSalesResponse.tokenResponse.litleToken)
     end
-  
+
     def test_62
       customer_hash = {
         'orderId' => '62',
@@ -181,7 +181,7 @@ module LitleOnline
       assert_equal('999', token_response.echeckSalesResponse.tokenResponse.eCheckAccountSuffix)
       assert_equal('111922223333444999', token_response.echeckSalesResponse.tokenResponse.litleToken)
     end
-  
+
     def test_63
       customer_hash = {
         'orderId' => '63',

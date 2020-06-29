@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestAuthReversal < Test::Unit::TestCase
     def test_simple_auth_reversal
       hash = {
@@ -39,7 +39,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.auth_reversal(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -52,7 +52,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.auth_reversal(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_no_litle_txn_id
       hash = {
         'merchantId' => '101',
@@ -64,6 +64,6 @@ module LitleOnline
       response= LitleOnlineRequest.new.auth_reversal(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
   end
 end

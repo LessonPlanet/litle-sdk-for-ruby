@@ -22,11 +22,11 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
-  
+module OldLitleOnline
+
   class TestForceCapture < Test::Unit::TestCase
     def test_both_choices_card_and_token
       hash = {
@@ -53,7 +53,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_all_choices
       hash = {
         'merchantId' => '101',
@@ -84,7 +84,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.force_capture(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-    
+
     def test_logged_in_user
       hash = {
       	'loggedInUser' => 'gdake',

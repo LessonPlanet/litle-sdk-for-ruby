@@ -22,12 +22,12 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'mocha'
 
-module LitleOnline
-  
+module OldLitleOnline
+
   class TestCredit < Test::Unit::TestCase
     def test_both_choices_card_and_paypal
       hash = {
@@ -48,11 +48,11 @@ module LitleOnline
         'token'=>'1234',
         'transactionId'=>'123456'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_three_choices_card_and_paypage_and_paypal
       hash = {
         'merchantId' => '101',
@@ -80,7 +80,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-  
+
     def test_all_choices_card_and_paypage_and_paypal_and_token
       hash = {
         'merchantId' => '101',
@@ -113,11 +113,11 @@ module LitleOnline
         'cardValidationNum'=>'555',
         'type'=>'VI'
         }}
-  
+
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-    
+
     def test_action_reason_on_orphaned_refund
       hash = {
         'merchantId' => '101',
@@ -174,7 +174,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /If token litleToken is specified, it must be between/, exception.message
     end
-    
+
     def test_token_missing_token
       hash = {
         'merchantId' => '101',
@@ -209,7 +209,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /If pos entryMode is specified, it must be in/, exception.message
     end
-    
+
     def test_paypage_missing_id
       hash = {
         'merchantId' => '101',
@@ -226,7 +226,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.credit(hash)}
       assert_match /If paypage is specified, it must have a paypageRegistrationId/, exception.message
     end
-    
+
     def test_logged_in_user
       hash = {
       	'loggedInUser' => 'gdake',
@@ -241,6 +241,6 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.credit(hash)
     end
-    
+
   end
 end

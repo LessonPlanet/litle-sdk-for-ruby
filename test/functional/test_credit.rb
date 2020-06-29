@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestCredit < Test::Unit::TestCase
     def test_simple_credit_with_card
       hash = {
@@ -43,7 +43,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_credit_with_paypal
       hash = {
         'merchantId' => '101',
@@ -59,7 +59,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_illegal_order_id
       hash = {
         'merchantId' => '101',
@@ -77,7 +77,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -95,7 +95,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -113,7 +113,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_pay_pal_notes
       hash = {
         'merchantId' => '101',
@@ -131,7 +131,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.credit(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_processing_instructions_and_amex_data
       hash = {
         'merchantId' => '101',

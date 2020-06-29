@@ -1,13 +1,13 @@
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Litle_certTest2 < Test::Unit::TestCase
     #test enhanced data on auth response
     @@merchant_hash = {'reportGroup'=>'Planets',
       'merchantId'=>'101'
     }
-  
+
     #test 14-31 enhanced data need merchant with smart authorization features.
     def test_14
       customer_hash = {
@@ -29,7 +29,7 @@ module LitleOnline
       assert_equal('NO', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('GIFT', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_15
       customer_hash = {
         'orderId' => '15',
@@ -50,7 +50,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_16
       customer_hash = {
         'orderId' => '16',
@@ -71,7 +71,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_17
       customer_hash = {
         'orderId' => '17',
@@ -92,7 +92,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_18
       customer_hash = {
         'orderId' => '18',
@@ -113,7 +113,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_19
       customer_hash = {
         'orderId' => '19',
@@ -134,7 +134,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_20
       customer_hash = {
         'orderId' => '20',
@@ -155,7 +155,7 @@ module LitleOnline
       assert_equal('YES', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.reloadable)
       assert_equal('PAYROLL', auth_response.authorizationResponse.enhancedAuthResponse.fundingSource.prepaidCardType)
     end
-  
+
     def test_21
       customer_hash = {
         'orderId' => '21',
@@ -173,7 +173,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
     end
-  
+
     def test_22
       customer_hash = {
         'orderId' => '22',
@@ -191,7 +191,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
     end
-  
+
     def test_23
       customer_hash = {
         'orderId' => '23',
@@ -209,7 +209,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
     end
-  
+
     def test_24
       customer_hash = {
         'orderId' => '24',
@@ -227,7 +227,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('MASS AFFLUENT', auth_response.authorizationResponse.enhancedAuthResponse.affluence)
     end
-  
+
     def test_25
       customer_hash = {
         'orderId' => '25',
@@ -244,7 +244,7 @@ module LitleOnline
       assert_equal('Approved', auth_response.authorizationResponse.message)
       assert_equal('BRA', auth_response.authorizationResponse.enhancedAuthResponse.issuerCountry)
     end
-  
+
     # test 26-31 healthcare iias
     def test_26
       customer_hash = {
@@ -268,7 +268,7 @@ module LitleOnline
       assert_equal('341', auth_response.authorizationResponse.response)
       assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
     end
-  
+
     def test_27
       customer_hash = {
         'orderId' => '27',
@@ -292,7 +292,7 @@ module LitleOnline
       assert_equal('341', auth_response.authorizationResponse.response)
       assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
     end
-  
+
     def test_28
       customer_hash = {
         'orderId' => '28',
@@ -316,7 +316,7 @@ module LitleOnline
       assert_equal('000', auth_response.authorizationResponse.response)
       assert_equal('Approved', auth_response.authorizationResponse.message)
     end
-  
+
     def test_29
       customer_hash = {
         'orderId' => '29',
@@ -343,7 +343,7 @@ module LitleOnline
       assert_equal('341', auth_response.authorizationResponse.response)
       assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
     end
-  
+
     def test_30
       customer_hash = {
         'orderId' => '30',
@@ -370,7 +370,7 @@ module LitleOnline
       assert_equal('341', auth_response.authorizationResponse.response)
       assert_equal('Invalid healthcare amounts', auth_response.authorizationResponse.message)
     end
-  
+
     def test_31
       customer_hash = {
         'orderId' => '31',
@@ -396,7 +396,7 @@ module LitleOnline
       assert_equal('Partially Approved', auth_response.authorizationResponse.message)
       assert_equal('18699', auth_response.authorizationResponse.approvedAmount)
     end
-  
+
     def test_32
       customer_hash = {
         'orderId' => '32',
@@ -421,14 +421,14 @@ module LitleOnline
       assert_equal('Approved', authorization_response.authorizationResponse.message)
       assert_equal('01', authorization_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', authorization_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 32A
       capture_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '5005'}
       hash32a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash32a)
       assert_equal('000', capture_response.captureResponse.response)
       assert_equal('Approved', capture_response.captureResponse.message)
-  
+
       #test 32B
       authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
       hash1b = authReversal_hash.merge(@@merchant_hash)
@@ -436,7 +436,7 @@ module LitleOnline
       assert_equal('111', authReversal_response.authReversalResponse.response)
       assert_equal('Authorization amount has already been depleted', authReversal_response.authReversalResponse.message)
     end
-    
+
     def test_33
       customer_hash = {
         'orderId' => '33',
@@ -464,7 +464,7 @@ module LitleOnline
       assert_equal('22222', authorization_response.authorizationResponse.authCode)
       assert_equal('10', authorization_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', authorization_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 33A
       authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
       hash1b = authReversal_hash.merge(@@merchant_hash)
@@ -472,7 +472,7 @@ module LitleOnline
       assert_equal('000', authReversal_response.authReversalResponse.response)
       assert_equal('Approved', authReversal_response.authReversalResponse.message)
     end
-    
+
     def test_34
       customer_hash = {
         'orderId' => '34',
@@ -498,7 +498,7 @@ module LitleOnline
       assert_equal('33333', authorization_response.authorizationResponse.authCode)
       assert_equal('10', authorization_response.authorizationResponse.fraudResult.avsResult)
       assert_equal('M', authorization_response.authorizationResponse.fraudResult.cardValidationResult)
-  
+
       #test 34A
       authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId}
       hash1b = authReversal_hash.merge(@@merchant_hash)
@@ -506,7 +506,7 @@ module LitleOnline
       assert_equal('000', authReversal_response.authReversalResponse.response)
       assert_equal('Approved', authReversal_response.authReversalResponse.message)
     end
-    
+
     def test_35
       customer_hash = {
         'orderId' => '35',
@@ -530,14 +530,14 @@ module LitleOnline
       assert_equal('Approved', authorization_response.authorizationResponse.message)
       assert_equal('44444', authorization_response.authorizationResponse.authCode)
       assert_equal('12', authorization_response.authorizationResponse.fraudResult.avsResult)
-  
+
       #test 35A
       capture_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash32a = capture_hash.merge(@@merchant_hash)
       capture_response = LitleOnlineRequest.new.capture(hash32a)
       assert_equal('000', capture_response.captureResponse.response)
       assert_equal('Approved', capture_response.captureResponse.message)
-  
+
       #test 35B
       authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '20020'}
       hash1b = authReversal_hash.merge(@@merchant_hash)
@@ -545,7 +545,7 @@ module LitleOnline
       assert_equal('000', authReversal_response.authReversalResponse.response)
       assert_equal('Approved', authReversal_response.authReversalResponse.message)
     end
-    
+
     def test_36
       customer_hash = {
         'orderId' => '36',
@@ -560,7 +560,7 @@ module LitleOnline
       authorization_response = LitleOnlineRequest.new.authorization(hash)
       assert_equal('000', authorization_response.authorizationResponse.response)
       assert_equal('Approved', authorization_response.authorizationResponse.message)
-  
+
       #test 36A
       authReversal_hash =  {'litleTxnId' => authorization_response.authorizationResponse.litleTxnId, 'amount' => '10000'}
       hash1b = authReversal_hash.merge(@@merchant_hash)
@@ -568,6 +568,6 @@ module LitleOnline
       assert_equal('336', authReversal_response.authReversalResponse.response)
       assert_equal('Reversal Amount does not match Authorization amount', authReversal_response.authReversalResponse.message)
     end
-  
+
   end
 end

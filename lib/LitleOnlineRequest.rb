@@ -29,7 +29,7 @@ require_relative 'Configuration'
 # It also handles validation looking for missing or incorrect fields
 #contains the methods to properly create each transaction type
 #
-module LitleOnline
+module OldLitleOnline
 
   class LitleOnlineRequest
     def initialize
@@ -90,17 +90,17 @@ module LitleOnline
 
       commit(transaction, :registerTokenRequest, options)
     end
-    
+
     def update_card_validation_num_on_token(options)
    	  transaction = UpdateCardValidationNumOnToken.new
-    	
+
       transaction.orderId               = options['orderId']
       transaction.litleToken            = options['litleToken']
       transaction.cardValidationNum     = options['cardValidationNum']
-      
+
       SchemaValidation.validate_length(transaction.litleToken, true, 13, 25, "updateCardValidationNumOnToken", "litleToken")
       SchemaValidation.validate_length(transaction.cardValidationNum, true, 1, 4, "updateCardValidationNumOnToken", "cardValidationNum")
-      
+
       commit(transaction, :updateCardValidationNumOnToken, options)
     end
 
@@ -193,7 +193,7 @@ module LitleOnline
       add_echeck_order_info(transaction, options)
       add_echeck(transaction, options)
       transaction.merchantData              = MerchantData.from_hash(options)
-      
+
 
       commit(transaction, :echeckVerification, options)
     end
@@ -309,7 +309,7 @@ module LitleOnline
     def get_config(field, options)
       options[field.to_s] == nil ? @config_hash[field.to_s] : options[field.to_s]
     end
-    
+
     def get_logged_in_user(options)
       options['loggedInUser'] || nil
     end

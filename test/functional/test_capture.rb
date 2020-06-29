@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Test_capture < Test::Unit::TestCase
     def test_simple_capture
       hash = {
@@ -38,7 +38,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_simple_capture_with_partial
       hash = {
         'merchantId' => '101',
@@ -51,7 +51,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_complex_capture
       hash = {
         'merchantId' => '101',
@@ -68,7 +68,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture(hash)
       assert_equal('Valid Format', response.message)
     end
-    
+
     def test_no_txn_id
       hash = {
         'merchantId' => '101',
@@ -79,6 +79,6 @@ module LitleOnline
       response= LitleOnlineRequest.new.capture(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
   end
 end

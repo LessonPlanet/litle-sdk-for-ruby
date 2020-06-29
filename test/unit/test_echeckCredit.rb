@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Test_echeckCredit < Test::Unit::TestCase
     def test_echeck_credit_with_both
       hash = {
@@ -39,7 +39,7 @@ module LitleOnline
       exception = assert_raise(RuntimeError){LitleOnlineRequest.new.echeck_credit(hash)}
       assert_match /Entered an Invalid Amount of Choices for a Field, please only fill out one Choice!!!!/, exception.message
     end
-    
+
     def test_logged_in_user
       hash = {
       	'loggedInUser' => 'gdake',
@@ -53,6 +53,6 @@ module LitleOnline
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.echeck_credit(hash)
     end
-  
+
   end
 end

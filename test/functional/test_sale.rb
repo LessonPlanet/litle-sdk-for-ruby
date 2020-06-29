@@ -22,10 +22,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class TestSale < Test::Unit::TestCase
     def test_simple_sale_with_card
       hash = {
@@ -44,7 +44,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_simple_sale_with_paypal
       hash = {
         'merchantId' => '101',
@@ -62,7 +62,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal 'Valid Format', response.message
     end
-  
+
     def test_illegal_order_source
       hash = {
         'merchantId' => '101',
@@ -80,7 +80,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_report_group
       hash = {
         'merchantId' => '101',
@@ -98,7 +98,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_fields_out_of_order
       hash = {
         'merchantId' => '101',
@@ -117,7 +117,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_invalid_field
       hash = {
         'merchantId' => '101',
@@ -136,7 +136,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
+
     def test_simple_sale_with_card
       hash = {
         'merchantId'=>'101',
@@ -154,8 +154,8 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert_equal('000', response.saleResponse.response)
     end
-  
-    
+
+
     def test_no_order_id
       hash = {
         'merchantId' => '101',
@@ -172,7 +172,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -189,7 +189,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_source
       hash = {
         'merchantId' => '101',
@@ -206,7 +206,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.sale(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
   end
 
 end

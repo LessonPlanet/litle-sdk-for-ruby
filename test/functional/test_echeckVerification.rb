@@ -22,12 +22,12 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 
-module LitleOnline
+module OldLitleOnline
   class Test_echeckVerification < Test::Unit::TestCase
-  
+
     def test_simple_echeck_verification
       hash = {
         'merchantId' => '101',
@@ -42,7 +42,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_echeck_verification_with_echeck_token
       hash = {
         'merchantId' => '101',
@@ -57,7 +57,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_incorrect_order
       hash = {
         'merchantId' => '101',
@@ -73,7 +73,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert_equal('Valid Format', response.message)
     end
-  
+
     def test_extra_field_and_missing_billing
       hash = {
         'merchantId' => '101',
@@ -88,7 +88,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-    
+
     def test_no_amount
       hash = {
         'merchantId' => '101',
@@ -99,7 +99,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_id
       hash = {
         'merchantId' => '101',
@@ -109,7 +109,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
     def test_no_order_source
       hash = {
         'merchantId' => '101',
@@ -121,7 +121,7 @@ module LitleOnline
       response= LitleOnlineRequest.new.echeck_verification(hash)
       assert(response.message =~ /Error validating xml data against the schema/)
     end
-  
+
   end
 
 end

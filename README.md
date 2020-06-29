@@ -23,10 +23,10 @@ Please contact [Litle &amp; Co.](http://www.litle.com) to receive valid merchant
 Setup
 -----
 
-1) Install the LitleOnline Ruby gem from rubygems.org, this will install the latest SDK gem in your Ruby environment.
+1) Install the OldLitleOnline Ruby gem from rubygems.org, this will install the latest SDK gem in your Ruby environment.
 Our gem is available publicly from rubygems.org.  Use the command below to install.
 
->sudo gem install LitleOnline
+>sudo gem install OldLitleOnline
 
 Note: If you get errors, you might have to configure your proxy.
 
@@ -35,11 +35,11 @@ $HOME/.litle_SDK_config.yml
 
 For more details on setup see our instructions [here](https://github.com/LitleCo/litle-sdk-for-ruby/blob/master/SETUP.md)
 
-3.) Create a ruby file similar to:  
+3.) Create a ruby file similar to:
 
 ```ruby
-require 'LitleOnline'
-include LitleOnline
+require 'OldLitleOnline'
+include OldLitleOnline
 
 # Visa $10 Sale
 litleSaleTxn = {
@@ -65,7 +65,7 @@ puts "Litle Transaction ID: "+ response.saleResponse.litleTxnId
 
     Message: Valid Format
     Litle Transaction ID: <your-numeric-litle-txn-id>
- 
+
 More examples can be found here [Ruby Gists](https://gist.github.com/gists/search?q=Litle+Ruby+SDK&page=1)
 
 Please contact Lilte & Co. with any further questions.   You can reach us at sdksupport@litle.com.

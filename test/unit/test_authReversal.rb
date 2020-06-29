@@ -22,11 +22,11 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require 'test/unit'
 require 'mocha'
 
-module LitleOnline
+module OldLitleOnline
   class TestAuthReversal < Test::Unit::TestCase
     def test_invalid_field
       hash = {
@@ -40,7 +40,7 @@ module LitleOnline
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*<litleTxnId>12345678000<\/litleTxnId>.*/m), is_a(Hash))
       LitleOnlineRequest.new.auth_reversal(hash)
-    end  
+    end
 
     def test_logged_in_user
       hash = {
@@ -54,6 +54,6 @@ module LitleOnline
       }
       LitleXmlMapper.expects(:request).with(regexp_matches(/.*loggedInUser="gdake".*merchantSdk="Ruby;8.14.0".*/m), is_a(Hash))
       LitleOnlineRequest.new.auth_reversal(hash)
-    end  
+    end
   end
 end

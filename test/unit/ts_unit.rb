@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
 require 'test/unit'
-require 'lib/LitleOnline'
+require 'lib/OldLitleOnline'
 require_relative 'test_LitleOnlineRequest'
 
 require_relative 'test_xmlfields'
